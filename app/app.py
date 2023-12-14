@@ -30,7 +30,7 @@ def api():
 @app.route('/lecturer')
 def lecturer():
     #data = {'name': 'John', 'age': 25}
-    with open("./data/lecturer.json", "r") as file:
+    with open("./app/data/lecturer.json", "r") as file:
         data = json.load(file)
 
     return render_template("lecturer.html", lecturer=data)
