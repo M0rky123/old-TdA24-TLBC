@@ -9,7 +9,6 @@ app.config.from_mapping(
     DATABASE=os.path.join(app.instance_path, 'tourdeflask.sqlite'),
 )
 
-# ensure the instance folder exists
 try:
     os.makedirs(app.instance_path)
 except OSError:
@@ -19,9 +18,12 @@ db.init_app(app)
 
 
 @app.route('/')
-def hello_world():  # put application's code here
-    return "Hello Tour de App! Edited Twice :)"
+def hello_world():
+    return "Hello TdA"
 
+@app.route('/api')
+def api():
+    return {"secret":"The cake is a lie"}
 
 if __name__ == '__main__':
     app.run()
