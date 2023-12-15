@@ -21,7 +21,7 @@ db.init_app(app)
 
 @app.route('/')
 def hello_world():
-    return "Hello TdA - test"
+    return "Hello TdA"
 
 @app.route('/api')
 def api():
@@ -34,6 +34,19 @@ def lecturer():
         data = json.load(file)
 
     return render_template("lecturer.html", lecturer=data)
+
+@app.route('/api/lecturers', methods=['POST'] )
+async def createlec():
+    pass
+
+@app.route('/api/lecturers', methods=['GET'] )
+async def getalllec():
+    pass
+
+@app.route('/api/lecturers/<lector_id>', methods=['GET'] )
+async def getlec():
+    pass
+
 
 
 if __name__ == '__main__':
