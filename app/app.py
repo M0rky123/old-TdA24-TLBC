@@ -1,20 +1,14 @@
 import os
 import json
-from flask import Flask, render_template
+import requests
+from flask import Flask, render_template, request, jsonify
 from . import db
+from .db import add_kantor, select_kantor
 
 template = "./app/index.html"
 
 app = Flask(__name__)
-
-app.config.from_mapping(
-    DATABASE=os.path.join(app.instance_path, 'tourdeflask.sqlite'),
-)
-
-try:
-    os.makedirs(app.instance_path)
-except OSError:
-    pass
+app.config['DATABASE'] = './app/data/lecture.db'
 
 db.init_app(app)
 
@@ -43,9 +37,28 @@ async def createlec():
 async def getalllec():
     pass
 
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    if request.method == 'POST':
+        title_before = request.form['title_before']
+        name = request.form['name']
+        middle_name = request.form['middle_name']
+        surname = request.form['surname']
+        title_after = request.form['title_after']
+        location = request.form['location']
+        claim = request.form['claim']
+        bio = request.form['bio']
+        email = request.form['email']
+        phone = request.form['phone']
+
+        add_kantor(title_before, name, middle_name, surname, title_after, location, claim, bio, email, phone)
+
+    return render_template('add_kantor.html')
+
 @app.route('/api/lecturers/<lector_id>', methods=['GET'] )
-async def getlec():
-    pass
+async def getlec(lector_id):
+    data = select_kantor(lector_id)
+    return (jsonify(data))
 
 
 

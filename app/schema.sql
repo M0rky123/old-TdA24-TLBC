@@ -18,4 +18,3 @@ _phone INTEGER NOT NULL
 );
 
 
-SELECT * FROM kantori WHERE lokace IS "Brno";

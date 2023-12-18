@@ -1,0 +1,46 @@
+<!-- templates/add_kantor.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Kantor</title>
+</head>
+<body>
+    <h1>Add Kantor</h1>
+    <form action="{{ url_for('add') }}" method="post">
+        <label for="title_before">Title Before:</label>
+        <input type="text" name="title_before" required><br>
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" required><br>
+
+        <label for="middle_name">Middle Name:</label>
+        <input type="text" name="middle_name"><br>
+
+        <label for="surname">Surname:</label>
+        <input type="text" name="surname" required><br>
+
+        <label for="title_after">Title After:</label>
+        <input type="text" name="title_after"><br>
+
+        <label for="location">Location:</label>
+        <input type="text" name="location" required><br>
+
+        <label for="claim">Claim:</label>
+        <input type="text" name="claim" required><br>
+
+        <label for="bio">Bio:</label>
+        <textarea name="bio" rows="4" required></textarea><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" name="phone" required><br>
+
+        <button type="submit">Add to Database</button>
+    </form>
+</body>
+</html>
