@@ -58,6 +58,7 @@ def add():
 @app.route('/api/lecturers/<lector_id>', methods=['GET'] )
 async def getlec(lector_id):
     data = select_kantor(lector_id)
+    print(type(data))
     return (jsonify(data))
 
 

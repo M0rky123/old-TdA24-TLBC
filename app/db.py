@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS kantori (
   _name TEXT NOT NULL,
   _middle_name TEXT,
   _surname TEXT NOT NULL,
+  _picture_url TEXT,
   _title_after TEXT,
   _location TEXT,
   _claim TEXT,
@@ -79,12 +80,12 @@ def select_kantor(uuid):
         cursor.execute("SELECT * FROM kantori WHERE _uuid = ?", (uuid,))
         return cursor.fetchone()
     
-def add_kantor(title_before: None, name, middle_name: None, surname, title_after: None, location: None, claim: None, bio: None, email, phone = int, tags: None = list):
+def add_kantor(title_before: None, name, middle_name: None, surname, picture_url, title_after: None, location: None, claim: None, bio: None, email, phone = int, tags: None = list):
     kantor_id = uuid.uuid4()
     taglist = str(tags)
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO kantori (_title_before, _name, _middle_name, _surname, _title_after, _location, _claim, _bio, _email, _phone, _uuid, _tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, title_after, location, claim, bio, email, phone, str(kantor_id), taglist))
+        cursor.execute("INSERT INTO kantori (_title_before, _name, _middle_name, _surname, _picture_url, _title_after, _location, _claim, _bio, _email, _phone, _uuid, _tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, str(kantor_id), taglist))
         
     connection.commit()
 
