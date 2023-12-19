@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lecturer</title>
-    <link rel="stylesheet" href="../static/css/lecturer.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lecturer</title>
+  <link rel="stylesheet" href="../static/css/lecturer.css">
 </head>
 <body>
-    <header>
-        <div id="logo"></div>
-    </header>
-    <main>
-        <div class="profile">
-            <h1>{{ lecturer.title_before }} {{ lecturer.first_name }} {{ lecturer.middle_name }} {{ lecturer.last_name }} {{ lecturer.title_after }}</h1>
-            <h2>{{ lecturer.claim }}</h2>
-        </div>
-        <div class="info">
-            <div class="table">
-                <div class="location">{{ lecturer.location }}</div>
-                <div class="price">{{ lecturer.price_per_hour }}</div>
-                <div class="tel">{{ lecturer.contact.telephone_numbers }}</div>
-                <div class="mail">{{ lecturer.contact.emails }}</div>
-            </div>
-            <div class="bio">
-                <p>{{ lecturer.bio }}</p>
-            </div>
-        </div>
-        <div class="tags">
+  <header>
+    <div id="logo"></div>
+  </header>
+  <main>
+    <div class="profile">
+      <img id="profile-picture"
+        src="https://tourdeapp.cz/storage/images/2023_02_25/412ff296a291f021bbb6de10e8d0b94863fa89308843b/big.png.webp"
+        alt="Profilový obrázek lektora.">
+      <h1>{{ lecturer.title_before }} {{ lecturer.first_name }} {{ lecturer.middle_name }} {{ lecturer.last_name }} {{
+        lecturer.title_after }}</h1>
+      <h2>{{ lecturer.claim }}</h2>
+    </div>
+    <div class="info">
+      <div class="table">
+        <div class="location">{{ lecturer.location }}</div>
+        <div class="price">{{ lecturer.price_per_hour }}</div>
+        <div class="tel">{{ lecturer.contact.telephone_numbers }}</div>
+        <div class="mail">{{ lecturer.contact.emails }}</div>
+      </div>
+      <div class="bio">
+        <p>{{ lecturer.bio }}</p>
+      </div>
+    </div>
+    <div class="tags">
 
-        </div>
-    </main>
-    <footer></footer>
-    <h2>Tags</h2>
-    <ul>
-        {% for tag in lecturer.tags %}
-            <li>{{ tag.name }}</li>
-        {% endfor %}
-    </ul>
+    </div>
+  </main>
+  <footer></footer>
+  <h2>Tags</h2>
+  <ul>
+    {% for tag in lecturer.tags %}
+    <li>{{ tag.name }}</li>
+    {% endfor %}
+  </ul>
 </body>
 </html>

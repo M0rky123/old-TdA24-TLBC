@@ -3,7 +3,7 @@
 header {
   width: 100%;
   height: 96px;
-  background: var(--col-dark);
+  background: var(--col-light);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,3 +17,25 @@ header {
   background-repeat: no-repeat;
 }
 
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#profile-picture {
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 50%;
+  margin: 4rem auto;
+}
+
+.profile > h1 {
+  font-family: "Lalezar";
+  font-weight: 400;
+}
+
+.profile > h2 {
+  font-family: "Open Sans";
+  font-weight: 300;
+}

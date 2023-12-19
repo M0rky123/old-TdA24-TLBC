@@ -1,13 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
+
 :root {
   --col-white: #fff;
   --col-black: #333;
-  --col-dark: #00384D;
-  --col-light: #74C7D3;
-  --col-yellow: #FECB2E;
+  --col-dark: #00384d;
+  --col-light: #74c7d3;
+  --col-yellow: #fecb2e;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  max-width: 60rem;
+  margin: 0 auto;
 }
