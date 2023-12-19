@@ -16,19 +16,19 @@ CREATE TABLE IF NOT EXISTS kategorie (
 CREATE_KANTORI_TABLE = """
 CREATE TABLE IF NOT EXISTS kantori (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  _uuid TEXT,
-  _title_before TEXT,
-  _name TEXT NOT NULL,
-  _middle_name TEXT,
-  _surname TEXT NOT NULL,
-  _picture_url TEXT,
-  _title_after TEXT,
-  _location TEXT,
-  _claim TEXT,
-  _bio TEXT,
-  _email TEXT NOT NULL,
-  _phone INTEGER NOT NULL,
-  _tags TEXT
+  uuid TEXT,
+  title_before TEXT,
+  first_name TEXT NOT NULL,
+  middle_name TEXT,
+  surname TEXT NOT NULL,
+  picture_url TEXT,
+  title_after TEXT,
+  loc TEXT,
+  claim TEXT,
+  bio TEXT,
+  email TEXT NOT NULL,
+  phone INTEGER NOT NULL,
+  tags TEXT
 );
 """
 
@@ -74,10 +74,17 @@ def select_all_kantori():
         return cursor.fetchall()
 
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
 def select_kantor(uuid):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        connection.row_factory = dict_factory
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM kantori WHERE _uuid = ?", (uuid,))
+        cursor.execute("SELECT * FROM kantori WHERE uuid = ?", (uuid,))
         return cursor.fetchone()
     
 def add_kantor(title_before: None, name, middle_name: None, surname, picture_url, title_after: None, location: None, claim: None, bio: None, email, phone = int, tags: None = list):
@@ -85,7 +92,7 @@ def add_kantor(title_before: None, name, middle_name: None, surname, picture_url
     taglist = str(tags)
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO kantori (_title_before, _name, _middle_name, _surname, _picture_url, _title_after, _location, _claim, _bio, _email, _phone, _uuid, _tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, str(kantor_id), taglist))
+        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, surname, picture_url, title_after, loc, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, str(kantor_id), taglist))
         
     connection.commit()
 

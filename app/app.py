@@ -7,7 +7,7 @@ from .db import add_kantor, select_kantor
 
 template = "./app/index.html"
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 app.config['DATABASE'] = './app/data/lecture.db'
 
 db.init_app(app)
@@ -58,8 +58,7 @@ def add():
 @app.route('/api/lecturers/<lector_id>', methods=['GET'] )
 async def getlec(lector_id):
     data = select_kantor(lector_id)
-    print(type(data))
-    return (jsonify(data))
+    return render_template("lecturer-template.html", lecturer=data)
 
 
 
