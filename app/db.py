@@ -87,7 +87,7 @@ def select_kantor(uuid):
         cursor.execute("SELECT * FROM kantori WHERE uuid = ?", (uuid,))
         return cursor.fetchone()
     
-def add_kantor(title_before: None, name, middle_name: None, surname, picture_url, title_after: None, location: None, claim: None, bio: None, email, phone = int, tags: None = list):
+def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, location: None, claim: None, bio: None, email, phone = int, tags: None = list):
     kantor_id = uuid.uuid4()
     taglist = str(tags)
     with sqlite3.connect(current_app.config['DATABASE']) as connection:

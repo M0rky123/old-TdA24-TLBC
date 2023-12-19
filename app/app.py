@@ -5,6 +5,8 @@ from flask import Flask, render_template, request, jsonify
 from . import db
 from .db import add_kantor, select_kantor
 
+logo = "./static/img/logo_white.png"
+
 template = "./app/index.html"
 
 app = Flask(__name__, static_folder="static")
@@ -27,7 +29,7 @@ def lecturer():
     with open("./app/data/lecturer.json", "r") as file:
         data = json.load(file)
 
-    return render_template("lecturer.html", lecturer=data)
+    return render_template("lecturer.html", lecturer=data, logoing=logo)
 
 @app.route('/api/lecturers', methods=['POST'] )
 async def createlec():
@@ -37,6 +39,8 @@ async def createlec():
 async def getalllec():
     pass
 
+
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
@@ -45,15 +49,26 @@ def add():
         middle_name = request.form['middle_name']
         surname = request.form['surname']
         title_after = request.form['title_after']
+        picture_url = request.form['picture_url']
         location = request.form['location']
         claim = request.form['claim']
         bio = request.form['bio']
         email = request.form['email']
         phone = request.form['phone']
+        tags = request.form.getlist('item')  # Assuming 'item' is a list in the form
 
-        add_kantor(title_before, name, middle_name, surname, title_after, location, claim, bio, email, phone)
+        items.extend(tags)
+        add_kantor(title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, items)
 
     return render_template('add_kantor.html')
+
+items = []
+@app.route('/add_item', methods=['POST'])
+def add_item():
+    item = request.json['item']
+    
+    items.append(item)
+    return jsonify(items=items)
 
 @app.route('/api/lecturers/<lector_id>', methods=['GET'] )
 async def getlec(lector_id):

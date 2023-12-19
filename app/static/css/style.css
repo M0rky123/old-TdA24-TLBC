@@ -1,0 +1,13 @@
+:root {
+  --col-white: #fff;
+  --col-black: #333;
+  --col-dark: #00384D;
+  --col-light: #74C7D3;
+  --col-yellow: #FECB2E;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
