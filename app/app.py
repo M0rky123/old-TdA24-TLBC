@@ -65,9 +65,11 @@ def add():
         bio = request.form['bio']
         email = request.form['email']
         phone = request.form['phone']
-        tags = request.form.getlist('item')  # Assuming 'item' is a list in the form
+        tags = request.form.getlist('option')  # Assuming 'item' is a list in the form
+
 
         items.extend(tags)
+        print(items)
         add_kantor(title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, items)
 
     existing_tags = get_all_tags()

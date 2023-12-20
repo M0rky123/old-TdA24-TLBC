@@ -5,6 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/css/testing.css">
   <title>Add Kantor</title>
 </head>
 <body>
@@ -43,15 +44,14 @@
     <label for="phone">Phone:</label>
     <input type="text" name="phone" required><br>
 
-    <label for="dropdown">Select an option:</label>
-    <select id="dropdown" name="dropdown">
-        {% for tag in existing_tags %}
-            <option value="{{ option }}">{{ tag }}</option>
+    <div id="list1" class="dropdown-check-list" tabindex="100">
+      <span class="anchor">Select Tags</span>
+      <ul class="items">
+        {% for option in existing_tags %}
+          <li><input value="{{ option[1] }}" type="checkbox" />{{ option[1] }} </li>
         {% endfor %}
-    </select>
-
-    <label for="tags">Tags: </label>
-    <input type="text" id="itemInput" name="tags" required>
+      </ul>
+    </div>
 
     <ul>
       {% for item in items %}
@@ -66,57 +66,38 @@
 
 
   <script>
-    var itemInput = document.getElementById('itemInput');
-  
-    itemInput.addEventListener('keyup', function (event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        addItem();
-      }
-    });
-  
-    // Add an event listener to the form
-    document.querySelector('form').addEventListener('submit', function (event) {
-      event.preventDefault(); // Prevent default form submission
-      addItem();
-    });
-  
-    function addItem() {
-      var item = itemInput.value;
-  
-      if (item.trim() !== '') {
-        itemInput.value = '';
-        fetch('/add_item', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ item: item }),
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            updateItemList(data.items);
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-      }
-  
-      function updateItemList(newItems) {
-        var itemList = document.querySelector('ul');
-        itemList.innerHTML = '';
-        newItems.forEach(function (item) {
-          var li = document.createElement('li');
-          li.textContent = item;
-          itemList.appendChild(li);
-        });
-      }
+  var checkList = document.getElementById('list1');
+    checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+      if (checkList.classList.contains('visible'))
+        checkList.classList.remove('visible');
+      else
+        checkList.classList.add('visible');
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add an event listener to the parent element
+        var dropdownCheckList = document.getElementById('list1');
+        dropdownCheckList.addEventListener('change', function (event) {
+            if (event.target.type === 'checkbox') {
+                // Create an array to store the checkbox values
+                var selectedValues = [];
+
+                // Get all checkboxes inside the parent element
+                var checkboxes = dropdownCheckList.querySelectorAll('input[type="checkbox"]');
+
+                // Iterate through all checkboxes
+                checkboxes.forEach(function (checkbox) {
+                    // If the checkbox is checked, add its value to the array
+                    if (checkbox.checked) {
+                        selectedValues.push(checkbox.value);
+                    }
+                });
+
+                // Log the array to the console (you can do whatever you want with this array)
+                console.log(selectedValues);
+            }
+        });
+    });
   </script>
   
 </body>

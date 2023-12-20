@@ -1,9 +1,6 @@
 @import url("./style.css");
 
-h2,
-span,
-li,
-p {
+h2, span, li, p {
   font-family: "Open Sans";
 }
 
@@ -37,6 +34,7 @@ header {
   max-height: 300px;
   border-radius: 50%;
   margin: 4rem auto;
+  box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.60);
 }
 
 .profile > h1 {
@@ -88,7 +86,7 @@ header {
   flex-shrink: 0;
   padding: 3rem;
   border-radius: 1.5rem;
-  background: var(--col-dark);
+  background: var(--col-dark);  box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.60);
 }
 
 .table span,
@@ -125,6 +123,7 @@ header {
 
 .tags {
   display: flex;
+  padding-left: 3rem;
 }
 
 .tags .fa-solid {
@@ -157,7 +156,9 @@ header {
   border-radius: 20rem;
   color: var(--col-white);
   background: var(--col-dark);
-}
+
+  
+  box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.60);}
 
 .tags > div {
   flex-grow: 1;
