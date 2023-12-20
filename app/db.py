@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS kantori (
   surname TEXT NOT NULL,
   picture_url TEXT,
   title_after TEXT,
+  price INTEGER,
   loc TEXT,
   claim TEXT,
   bio TEXT,
@@ -88,12 +89,13 @@ def select_kantor(uuid):
         cursor.execute("SELECT * FROM kantori WHERE uuid = ?", (uuid,))
         return cursor.fetchone()
     
-def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, location: None, claim: None, bio: None, email, phone = int, tags: None = list):
-    kantor_id = uuid.uuid4()
-    taglist = str(tags)
+def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, email, phone = int, tags: None = list):
+    kantor_id = str(uuid.uuid4())
+    taglist = str(["Not", "Working", "YET"])
+    print(type(phone))
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, surname, picture_url, title_after, loc, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, str(kantor_id), taglist))
+        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, surname, picture_url, title_after, price, loc, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, email, int(phone), kantor_id, taglist))
         
     connection.commit()
 

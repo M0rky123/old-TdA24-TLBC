@@ -1,20 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lecturer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lecturer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../static/css/lecturer.css">
 </head>
 <body>
-    <img src="../../static/img/meme.webp"/>
-    <h1>{{ lecturer["title_before"] }} {{ lecturer[first_name] }} {{ lecturer[middle_name] }} {{ lecturer["last_name"] }} {{ lecturer["title_after"] }}</h1>
-    <img src="{{ lecturer.picture_url }}" alt="{{ lecturer.first_name }} {{ lecturer.last_name }}">
-    <h2>Tags</h2>
-    <ul>
-        {% for tag in lecturer.tags %}
-            <li>{{ tag.name }}</li>
-        {% endfor %}
-        
-    </ul>
+  <header>
+    <div id="logo"></div>
+  </header>
+  <main>
+    <div class="profile">
+      <img id="profile-picture"
+        src="https://tourdeapp.cz/storage/images/2023_02_25/412ff296a291f021bbb6de10e8d0b94863fa89308843b/big.png.webp"
+        alt="Profilový obrázek lektora.">
+      <h1>{{ lecturer.title_before }} {{ lecturer.first_name }} {{ lecturer.middle_name }} {{ lecturer.last_name }} {{
+        lecturer.title_after }}</h1>
+      <h2>{{ lecturer.claim }}</h2>
+      <hr>
+    </div>
+    <div class="info">
+      <div class="table">
+        <div class="location">
+          <span class="icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </span>
+          <span>{{ lecturer.location }}</span>
+        </div>
+        <div class="price">
+          <span class="icon">
+            <i class="fa-solid fa-coins"></i>
+          </span>
+          <span>{{ lecturer.price_per_hour }} Kč / hod.</span>
+        </div>
+        <div class="tel">
+          <span class="icon">
+            <i class="fa-solid fa-square-phone"></i>
+          </span>
+          <ul>
+            <li>{{ lecturer.phone }}</li>
+          </ul>
+        </div>
+        <div class="mail">
+          <span class="icon">
+            <i class="fa-solid fa-envelope"></i>
+          </span>
+          <ul>
+            <li>{{ lecturer.email }}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bio">
+        <p>{{ lecturer.bio }}</p>
+      </div>
+    </div>
+    <div class="tags">
+      <span class="icon">
+        <i class="fa-solid fa-tag"></i>
+      </span>
+      <div>
+        <ul>
+          {% for tag in lecturer.tags %}
+          <li>{{ tag[0] }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <span>© 2023 TEACHER DIGITAL AGENCY</span>
+  </footer>
+
+
+  <script src="https://kit.fontawesome.com/7ba72c0f9b.js" crossorigin="anonymous"></script>
 </body>
 </html>

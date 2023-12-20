@@ -4,7 +4,7 @@ h2, span, li, p {
   font-family: "Open Sans";
 }
 
-/* PROFILE OF THE LECTOR */
+/* HEADER */
 
 header {
   width: 100%;
@@ -13,6 +13,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 #logo {
@@ -22,6 +23,15 @@ header {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.themeswitcher {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* PROFILE OF THE LECTOR */
 
 .profile {
   display: flex;
@@ -111,6 +121,7 @@ header {
 .bio {
   display: flex;
   align-items: center;
+  text-align: justify;
 }
 
 .info p {
@@ -145,7 +156,7 @@ header {
   list-style: none;
   font-size: 14px;
   font-weight: 600;
-  /*  text-transform: uppercase;*/
+  text-transform: uppercase;
 }
 
 .tags li {
@@ -156,12 +167,7 @@ header {
   border-radius: 20rem;
   color: var(--col-white);
   background: var(--col-dark);
-
-  
-  box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.60);}
-
-.tags > div {
-  flex-grow: 1;
+  box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.60);
 }
 
 /* FOOTER */

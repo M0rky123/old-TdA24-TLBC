@@ -60,6 +60,7 @@ def add():
         surname = request.form['surname']
         title_after = request.form['title_after']
         picture_url = request.form['picture_url']
+        price = request.form['price']
         location = request.form['location']
         claim = request.form['claim']
         bio = request.form['bio']
@@ -70,7 +71,7 @@ def add():
 
         items.extend(tags)
         print(items)
-        add_kantor(title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, items)
+        add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, email, phone, items)
 
     existing_tags = get_all_tags()
     return render_template('add_kantor.html', existing_tags=existing_tags)
@@ -86,7 +87,10 @@ def add_item():
 @app.route('/api/lecturers/<lector_id>', methods=['GET'] )
 async def getlec(lector_id):
     data = select_kantor(lector_id)
-    return render_template("lecturer-template.html", lecturer=data)
+    if data: 
+        return render_template("lecturer-template.html", lecturer=data)
+    else: 
+        return render_template("404.html", lecturer=lector_id)
 
 
 
