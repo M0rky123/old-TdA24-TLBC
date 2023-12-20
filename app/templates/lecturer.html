@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>lecturer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lalezar&family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../static/css/lecturer.css">
 </head>
 <body>
@@ -18,28 +23,65 @@
       <h1>{{ lecturer.title_before }} {{ lecturer.first_name }} {{ lecturer.middle_name }} {{ lecturer.last_name }} {{
         lecturer.title_after }}</h1>
       <h2>{{ lecturer.claim }}</h2>
+      <hr>
     </div>
     <div class="info">
       <div class="table">
-        <div class="location">{{ lecturer.location }}</div>
-        <div class="price">{{ lecturer.price_per_hour }}</div>
-        <div class="tel">{{ lecturer.contact.telephone_numbers }}</div>
-        <div class="mail">{{ lecturer.contact.emails }}</div>
+        <div class="location">
+          <span class="icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </span>
+          <span>{{ lecturer.location }}</span>
+        </div>
+        <div class="price">
+          <span class="icon">
+            <i class="fa-solid fa-coins"></i>
+          </span>
+          <span>{{ lecturer.price_per_hour }} Kč / hod.</span>
+        </div>
+        <div class="tel">
+          <span class="icon">
+            <i class="fa-solid fa-square-phone"></i>
+          </span>
+          <ul>
+            {% for tel in lecturer.contact.telephone_numbers %}
+            <li>{{ tel }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="mail">
+          <span class="icon">
+            <i class="fa-solid fa-envelope"></i>
+          </span>
+          <ul>
+            {% for email in lecturer.contact.emails %}
+            <li>{{ email }}</li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
       <div class="bio">
         <p>{{ lecturer.bio }}</p>
       </div>
     </div>
     <div class="tags">
-
+      <span class="icon">
+        <i class="fa-solid fa-tag"></i>
+      </span>
+      <div>
+        <ul>
+          {% for tag in lecturer.tags %}
+          <li>{{ tag.name }}</li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </main>
-  <footer></footer>
-  <h2>Tags</h2>
-  <ul>
-    {% for tag in lecturer.tags %}
-    <li>{{ tag.name }}</li>
-    {% endfor %}
-  </ul>
+  <footer>
+    <span>© 2023 TEACHER DIGITAL AGENCY</span>
+  </footer>
+
+
+  <script src="https://kit.fontawesome.com/7ba72c0f9b.js" crossorigin="anonymous"></script>
 </body>
 </html>

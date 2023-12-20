@@ -3,100 +3,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Kantor</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Kantor</title>
 </head>
 <body>
-    <h1>Add Kantor</h1>
-    <form action="{{ url_for('add') }}" method="post">
-        <label for="title_before">Title Before:</label>
-        <input type="text" name="title_before" required><br>
+  <h1>Add Kantor</h1>
+  <form action="{{ url_for('add') }}" method="post">
+    <label for="title_before">Title Before:</label>
+    <input type="text" name="title_before" required><br>
 
-        <label for="name">Name:</label>
-        <input type="text" name="name" required><br>
+    <label for="name">Name:</label>
+    <input type="text" name="name" required><br>
 
-        <label for="middle_name">Middle Name:</label>
-        <input type="text" name="middle_name"><br>
+    <label for="middle_name">Middle Name:</label>
+    <input type="text" name="middle_name"><br>
 
-        <label for="surname">Surname:</label>
-        <input type="text" name="surname" required><br>
+    <label for="surname">Surname:</label>
+    <input type="text" name="surname" required><br>
 
-        <label for="title_after">Title After:</label>
-        <input type="text" name="title_after"><br>
-        
-        <label for="picture_url">Profile Picture URL:</label>
-        <input type="text" name="picture_url"><br>
+    <label for="title_after">Title After:</label>
+    <input type="text" name="title_after"><br>
 
-        <label for="location">Location:</label>
-        <input type="text" name="location" required><br>
+    <label for="picture_url">Profile Picture URL:</label>
+    <input type="text" name="picture_url"><br>
 
-        <label for="claim">Claim:</label>
-        <input type="text" name="claim" required><br>
+    <label for="location">Location:</label>
+    <input type="text" name="location" required><br>
 
-        <label for="bio">Bio:</label>
-        <textarea name="bio" rows="4" required></textarea><br>
+    <label for="claim">Claim:</label>
+    <input type="text" name="claim" required><br>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
+    <label for="bio">Bio:</label>
+    <textarea name="bio" rows="4" required></textarea><br>
 
-        <label for="phone">Phone:</label>
-        <input type="text" name="phone" required><br>
+    <label for="email">Email:</label>
+    <input type="email" name="email" required><br>
 
-        <button type="submit">Add to Database</button>
-    </form>
-    <ul>
-        {% for item in items %}
-            <li>{{ item }}</li>
+    <label for="phone">Phone:</label>
+    <input type="text" name="phone" required><br>
+
+    <label for="dropdown">Select an option:</label>
+    <select id="dropdown" name="dropdown">
+        {% for tag in existing_tags %}
+            <option value="{{ option }}">{{ tag }}</option>
         {% endfor %}
+    </select>
+
+    <label for="tags">Tags: </label>
+    <input type="text" id="itemInput" name="tags" required>
+
+    <ul>
+      {% for item in items %}
+      <li>{{ item }}</li>
+      {% endfor %}
     </ul>
 
-    <input type="text" id="itemInput" name="item" required>
+    <button type="submit">Add to Database</button>
+  </form>
 
-    <script>
-        var itemInput = document.getElementById('itemInput');
-        
-        itemInput.addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                addItem();
+
+
+
+  <script>
+    var itemInput = document.getElementById('itemInput');
+  
+    itemInput.addEventListener('keyup', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        addItem();
+      }
+    });
+  
+    // Add an event listener to the form
+    document.querySelector('form').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+      addItem();
+    });
+  
+    function addItem() {
+      var item = itemInput.value;
+  
+      if (item.trim() !== '') {
+        itemInput.value = '';
+        fetch('/add_item', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ item: item }),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
             }
+            return response.json();
+          })
+          .then(data => {
+            updateItemList(data.items);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }
+  
+      function updateItemList(newItems) {
+        var itemList = document.querySelector('ul');
+        itemList.innerHTML = '';
+        newItems.forEach(function (item) {
+          var li = document.createElement('li');
+          li.textContent = item;
+          itemList.appendChild(li);
         });
-
-        function addItem() {
-            var item = itemInput.value;
-
-            if (item.trim() !== '') {
-                itemInput.value = '';
-                fetch('/add_item', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ item: item }),
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    updateItemList(data.items);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            }
-            function updateItemList(newItems) {
-                var itemList = document.querySelector('ul');
-                itemList.innerHTML = '';
-                newItems.forEach(function(item) {
-                    var li = document.createElement('li');
-                    li.textContent = item;
-                    itemList.appendChild(li);
-                });
-            }
-        }
-    </script>
+      }
+    }
+  </script>
+  
 </body>
 </html>

@@ -1,5 +1,14 @@
 @import url("./style.css");
 
+h2,
+span,
+li,
+p {
+  font-family: "Open Sans";
+}
+
+/* PROFILE OF THE LECTOR */
+
 header {
   width: 100%;
   height: 96px;
@@ -33,9 +42,136 @@ header {
 .profile > h1 {
   font-family: "Lalezar";
   font-weight: 400;
+  font-size: 3rem;
+  color: var(--col-dark);
 }
 
 .profile > h2 {
-  font-family: "Open Sans";
-  font-weight: 300;
+  font-weight: 400;
+  font-size: 24px;
+  color: var(--col-black);
+  margin-top: 0.5rem;
+}
+
+.profile hr {
+  width: 30rem;
+  height: 2px;
+  margin-top: 3rem;
+  background: var(--col-black);
+}
+
+/* ICONS */
+
+.table .fa-solid {
+  color: var(--col-light);
+  font-size: 1.5rem;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  width: 1.5rem;
+  margin-right: 1rem;
+}
+
+/* INFO ABOUT THE LECTOR */
+
+.info {
+  display: flex;
+  gap: 3rem;
+  padding: 3rem;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 3rem;
+  border-radius: 1.5rem;
+  background: var(--col-dark);
+}
+
+.table span,
+.table ul {
+  color: var(--col-white);
+  list-style-type: none;
+  font-size: 16px;
+}
+
+.table li:not(:last-of-type) {
+  margin-bottom: 2px;
+}
+
+.table > div {
+  display: flex;
+}
+
+.table > div:not(:last-of-type) {
+  margin-bottom: 1rem;
+}
+
+.bio {
+  display: flex;
+  align-items: center;
+}
+
+.info p {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.75rem;
+}
+
+/* TAGS */
+
+.tags {
+  display: flex;
+}
+
+.tags .fa-solid {
+  color: var(--col-light);
+  font-size: 35.2px;
+}
+
+.tags .icon {
+  display: flex;
+  justify-content: center;
+  width: 3rem;
+}
+
+.tags ul {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 1rem;
+  list-style: none;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.tags li {
+  white-space: nowrap;
+  width: min-content;
+  height: min-content;
+  padding: 0.5rem 1rem;
+  border-radius: 20rem;
+  color: var(--col-white);
+  background: var(--col-dark);
+}
+
+.tags > div {
+  flex-grow: 1;
+}
+
+/* FOOTER */
+
+footer {
+  width: 100%;
+  height: 96px;
+  background: var(--col-light);
+  color: var(--col-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
 }

@@ -6,10 +6,11 @@ import uuid
 
 
 
-CREATE_KATEGORIE_TABLE = """
-CREATE TABLE IF NOT EXISTS kategorie (
+CREATE_TAG_TABLE = """
+CREATE TABLE IF NOT EXISTS tags (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL
+  tag_name TEXT NOT NULL,
+  tag_id TEXT NOT NULL
 );
 """
 
@@ -32,7 +33,7 @@ CREATE TABLE IF NOT EXISTS kantori (
 );
 """
 
-INIT_DB_STATEMENTS = [CREATE_KATEGORIE_TABLE, CREATE_KANTORI_TABLE]
+INIT_DB_STATEMENTS = [CREATE_TAG_TABLE, CREATE_KANTORI_TABLE]
 
 def get_db():
     if 'db' not in g:
@@ -95,6 +96,21 @@ def add_kantor(title_before: None, name, middle_name: None, surname, picture_url
         cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, surname, picture_url, title_after, loc, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, str(kantor_id), taglist))
         
     connection.commit()
+
+def add_tag_to_db(name, uuid: None):
+    if uuid == None:
+        uuid = str(uuid.uuid4())
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO tags (tag_name, tag_id) VALUES (?, ?)", (name, uuid))
+
+    connection.commit()
+
+def get_all_tags():
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM tags")
+        return cursor.fetchall()
 
 @click.command('init-db')
 @with_appcontext

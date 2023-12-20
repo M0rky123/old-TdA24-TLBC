@@ -3,7 +3,7 @@ import json
 import requests
 from flask import Flask, render_template, request, jsonify
 from . import db
-from .db import add_kantor, select_kantor
+from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db
 
 logo = "./static/img/logo_white.png"
 
@@ -39,6 +39,16 @@ async def createlec():
 async def getalllec():
     pass
 
+@app.route('/add_tag', methods=['GET', 'POST'])
+def add_tag():
+    if request.method == 'POST':
+        tag_name = request.form['tag_name']
+        tag_id = request.form['tag_id']
+
+        add_tag_to_db(tag_name, tag_id)
+    
+    return render_template('add_tag.html')
+
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -60,7 +70,8 @@ def add():
         items.extend(tags)
         add_kantor(title_before, name, middle_name, surname, picture_url, title_after, location, claim, bio, email, phone, items)
 
-    return render_template('add_kantor.html')
+    existing_tags = get_all_tags()
+    return render_template('add_kantor.html', existing_tags=existing_tags)
 
 items = []
 @app.route('/add_item', methods=['POST'])

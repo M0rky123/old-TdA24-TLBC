@@ -1,0 +1,27 @@
+<!-- templates/add_kantor.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Kantor</title>
+</head>
+<body>
+  <h1>Add Tag</h1>
+  <form action="{{ url_for('add_tag') }}" method="post">
+
+    <label for="tag_name">Tag Name:</label>
+    <input type="text" name="tag_name" required><br>
+
+    <label for="tag_id">Tag ID:</label>
+    <input type="text" name="tag_id"><br>
+
+    <button type="submit">Add to Database</button>
+  </form>
+
+
+
+
+</body>
+</html>
