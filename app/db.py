@@ -1,5 +1,5 @@
 import click
-from flask import Flask, current_app, g
+from flask import Flask, current_app, g, abort
 from flask.cli import with_appcontext
 import sqlite3
 import uuid
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS kantori (
   claim TEXT,
   bio TEXT,
   email TEXT NOT NULL,
-  phone INTEGER NOT NULL,
+  phone TEXT NOT NULL,
   tags TEXT
 );
 """
@@ -69,27 +69,38 @@ def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
 
-def select_all_kantori():
-    with sqlite3.connect(current_app.config['DATABASE']) as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM kantori")
-        return cursor.fetchall()
-
-
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
 
+def select_all_kantori():
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        connection.row_factory = dict_factory
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM kantori")
+        data = cursor.fetchall()
+        for lector in data:
+            lector["tags"] = eval(lector["tags"])
+        print(data)
+        return data
+
 def select_kantor(uuid):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         connection.row_factory = dict_factory
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM kantori WHERE uuid = ?", (uuid,))
-        return cursor.fetchone()
+        data = cursor.fetchone()
+        if data:
+            data["tags"] = eval(data["tags"])
+            return data
+        else: 
+            abort(404)
+
+
     
-def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, email, phone = int, tags: None = list):
+def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, email = list, phone = list, tags: None = list):
     kantor_id = str(uuid.uuid4())
     taglist = str(["Not", "Working", "YET"])
     print(type(phone))
