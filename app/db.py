@@ -2,7 +2,6 @@ import click
 from flask import Flask, current_app, g, abort
 from flask.cli import with_appcontext
 import sqlite3
-import uuid
 
 
 
@@ -16,14 +15,13 @@ CREATE TABLE IF NOT EXISTS tags (
 
 CREATE_KANTORI_TABLE = """
 CREATE TABLE IF NOT EXISTS kantori (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
   uuid TEXT,
   title_before TEXT,
   first_name TEXT NOT NULL,
   middle_name TEXT,
   surname TEXT NOT NULL,
-  picture_url TEXT,
   title_after TEXT,
+  picture_url TEXT,
   price INTEGER,
   loc TEXT,
   claim TEXT,
@@ -82,8 +80,19 @@ def select_all_kantori():
         cursor.execute("SELECT * FROM kantori")
         data = cursor.fetchall()
         for lector in data:
-            lector["tags"] = eval(lector["tags"])
-        print(data)
+            lector.pop("id", None)
+            lector["UUID"] = lector.pop("uuid", None)
+            lector["last_name"] = lector.pop("surname", None)
+            lector["picture_url"] = lector.pop("picture_url", None)
+            lector["location"] = lector.pop("loc", None)
+            lector["claim"] = lector.pop("claim", None)
+            lector["bio"] = lector.pop("bio", None)
+            lector["tags"] = eval(lector.pop("tags", None))
+            lector["price_per_hour"] = lector.pop("price", None)
+            lector["contact"] = {
+                "telephone_numbers": eval(lector.pop("phone", [])),
+                "emails": eval(lector.pop("email", []))
+            }
         return data
 
 def select_kantor(uuid):
@@ -94,19 +103,18 @@ def select_kantor(uuid):
         data = cursor.fetchone()
         if data:
             data["tags"] = eval(data["tags"])
+            data["phone"] = eval(data["phone"])
+            data["email"] = eval(data["email"])
             return data
         else: 
             abort(404)
 
 
     
-def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, email = list, phone = list, tags: None = list):
-    kantor_id = str(uuid.uuid4())
-    taglist = str(["Not", "Working", "YET"])
-    print(type(phone))
+def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, surname, picture_url, title_after, price, loc, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, email, int(phone), kantor_id, taglist))
+        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, surname, picture_url, title_after, price, loc, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
         
     connection.commit()
 

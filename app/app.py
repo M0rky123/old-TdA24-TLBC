@@ -29,23 +29,27 @@ def api():
 
 @app.route('/api/lecturers', methods=['POST'] )
 async def createlec():
-    title_before = request.form['title_before']
-    name = request.form['name']
-    middle_name = request.form['middle_name']
-    surname = request.form['surname']
-    title_after = request.form['title_after']
-    picture_url = request.form['picture_url']
-    price = request.form['price']
-    location = request.form['location']
-    claim = request.form['claim']
-    bio = request.form['bio']
-    email = request.form['email']
-    phone = request.form['phone']
-    tags = request.form.getlist('option') 
+    data = request.json
 
+    uuid = data.get('UUID')
+    title_before = data.get('title_before')
+    name = data.get('first_name')
+    middle_name = data.get('middle_name')
+    surname = data.get('last_name')
+    title_after = data.get('title_after')
+    picture_url = data.get('picture_url')
+    location = data.get('location')
+    claim = data.get('claim')
+    bio = data.get('bio')
+    price = data.get('price_per_hour')
+    email = data.get('contact', {}).get('emails', [])
+    phone = data.get('contact', {}).get('telephone_numbers', [])
+    tags = data.get('tags', [])
+    print(tags)
 
-    items.extend(tags)
-    add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, email, phone, items)
+    add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, uuid, email, phone, tags)
+
+    return jsonify({"message": "Lecturer created successfully"}), 201
 
 @app.route('/api/lecturers', methods=['GET'] )
 async def getalllec():
