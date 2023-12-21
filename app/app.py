@@ -105,8 +105,8 @@ def getlector(lector_id):
 ########### FrontEnd ###########
 
 @app.route('/', methods=['GET'])
-def root():
-    render_template("index.html")
+def main():
+    return render_template("index.html")
 
 @app.route('/lecturer')
 def lecturer():
