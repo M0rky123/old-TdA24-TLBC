@@ -109,6 +109,17 @@ def select_kantor(uuid):
         else: 
             abort(404)
 
+def create_tag_if_not_exist(tag_name):
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT FROM tags WHERE tag_name = ?", (tag_name))
+        data = cursor.fetchone()
+        if data:
+            return data
+        else:
+            date = add_tag_to_db(tag_name)
+            return data
+            
 
     
 def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
@@ -126,6 +137,7 @@ def add_tag_to_db(name, uuid: None):
         cursor.execute("INSERT INTO tags (tag_name, tag_id) VALUES (?, ?)", (name, uuid))
 
     connection.commit()
+    return {"name": name, "uuid": uuid}
 
 def get_all_tags():
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
