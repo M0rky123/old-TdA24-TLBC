@@ -45,11 +45,10 @@ async def createlec():
     email = data.get('contact', {}).get('emails', [])
     phone = data.get('contact', {}).get('telephone_numbers', [])
     tags = data.get('tags', [])
-    print(tags)
 
     add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, uuid, email, phone, tags)
 
-    return jsonify({"message": "Lecturer created successfully"}), 201
+    return data, 201
 
 @app.route('/api/lecturers', methods=['GET'] )
 async def getalllec():
