@@ -4,6 +4,7 @@ import requests
 from flask import Flask, render_template, request, jsonify
 from . import db
 from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist
+import uuid as uuidgen
 
 logo = "./static/img/logo_white.png"
 
@@ -33,7 +34,7 @@ async def createlec():
     
     uuid = data.get('uuid')
     if uuid == None:
-        uuid = str(uuid.uuid4())
+        uuid = str(uuidgen.uuid4())
         data['uuid'] = uuid
     title_before = data.get('title_before')
     name = data.get('first_name')
@@ -48,14 +49,20 @@ async def createlec():
     email = data.get('contact', {}).get('emails', [])
     phone = data.get('contact', {}).get('telephone_numbers', [])
     tags = data.get('tags', [])
-    
+    print(type(tags))
+    new_tags = []
     for tag in tags:
-        tag.pop
-        tag = create_tag_if_not_exist(tag["name"])
-        tags.append(tag)
+        if isinstance(tag, dict):
+            tag_name = tag.pop("name", None)
+            if tag_name:
+                new_tag = create_tag_if_not_exist(tag_name)
+                new_tags.append(new_tag)
+    tags = new_tags
+    data['tags'] = tags
         
     add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, uuid, email, phone, tags)
 
+    print(data)
     return data, 200
 
 @app.route('/api/lecturers', methods=['GET'] )

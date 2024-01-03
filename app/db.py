@@ -2,6 +2,7 @@ import click
 from flask import Flask, current_app, g, abort
 from flask.cli import with_appcontext
 import sqlite3
+import uuid as uuidgen
 
 
 
@@ -112,9 +113,11 @@ def select_kantor(uuid):
 def create_tag_if_not_exist(tag_name):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT FROM tags WHERE tag_name = ?", (tag_name))
+        cursor.execute("SELECT * FROM tags WHERE tag_name = ?", (tag_name,))
+
         data = cursor.fetchone()
         if data:
+            data = {"name": data[1], "uuid": data[2]}
             return data
         else:
             data = add_tag_to_db(tag_name)
@@ -131,7 +134,7 @@ def add_kantor(title_before: None, name, middle_name: None, surname, picture_url
 
 def add_tag_to_db(name, uuid: None):
     if uuid == None:
-        uuid = str(uuid.uuid4())
+        uuid = str(uuidgen.uuid4())
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("INSERT INTO tags (tag_name, tag_id) VALUES (?, ?)", (name, uuid))
