@@ -1,0 +1,280 @@
+@import url("./style.css");
+
+header,
+footer {
+  width: 100%;
+  height: 5rem;
+  background: var(--col-dark);
+  color: var(--col-white);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#logo {
+  display: block;
+  width: 5rem;
+  height: 5rem;
+  background-image: url("../img/logo.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+h3 {
+  position: relative;
+  margin-bottom: 3rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Lalezar", sans-serif;
+  font-weight: 300;
+  font-size: 2rem;
+  color: var(--col-white);
+}
+
+h3::after {
+  content: "";
+  position: absolute;
+  top: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35%;
+  height: 1.5px;
+  background: var(--col-light);
+}
+
+/* NAVIGATION */
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 60rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container nav {
+  width: 20rem;
+  display: flex;
+  align-items: center;
+  gap: 0 1rem;
+}
+
+.container nav a {
+  font-family: "Lalezar", sans-serif;
+  font-weight: 300;
+  text-decoration: none;
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 20rem;
+  text-align: center;
+  text-transform: capitalize;
+  background: var(--col-white);
+  color: var(--col-black);
+  border: 3px solid var(--col-black);
+  transition: transform 300ms;
+}
+
+.container nav a:hover,
+.container nav a:focus {
+  background: var(--col-black);
+  color: var(--col-white);
+  border: 3px solid var(--col-white);
+  outline: none;
+  transform: translateY(-5%);
+}
+
+/* HERO IMAGE */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  height: 30rem;
+  background: linear-gradient(#3339, #3339), url("../img/lecturer.jpg");
+  background-position: 0 -3rem;
+  background-size: cover;
+}
+
+.hero > * {
+  font-family: "Lalezar", sans-serif;
+  font-weight: 200;
+  text-shadow: var(--col-black) 3px 3px 0;
+}
+
+.hero h1 {
+  text-transform: uppercase;
+  font-size: 3rem;
+  color: var(--col-light);
+}
+
+.hero h2 {
+  font-size: 2rem;
+  color: var(--col-white);
+}
+
+/* ABOUT US */
+
+.about-us {
+  width: 100%;
+  padding: 3rem;
+  background: var(--col-dark);
+  color: var(--col-white);
+}
+
+.paragraphs {
+  display: grid;
+  gap: 2rem;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* LECTURERS */
+
+.lecturers {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0;
+}
+
+.lecturers h4 {
+  font-family: "Lalezar", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.15rem;
+  color: var(--col-light);
+  text-transform: capitalize;
+}
+
+.lecturers p,
+.lecturers span,
+.lecturers li {
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.75rem;
+  color: var(--col-white);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 2rem;
+}
+
+.card {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: var(--col-dark);
+  overflow-x: hidden;
+}
+
+.lecturer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lecturer img {
+  border-radius: 50%;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: start;
+  padding: 0.5rem 0;
+}
+
+.info-icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.info-icons i {
+  margin-right: 0.25rem;
+}
+
+.info-icons .fa-solid {
+  font-size: 1rem;
+  color: var(--col-light);
+}
+
+.info-icons span {
+  text-transform: capitalize;
+}
+
+.tags {
+  padding: 0.5rem 0 0.35rem 0;
+  overflow-x: scroll;
+}
+
+.tags ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 0 1rem;
+}
+
+.tags li {
+  padding: 0.25rem 0.5rem;
+  border-radius: 20rem;
+  font-weight: 700;
+  background: var(--col-yellow);
+  color: var(--col-black);
+  text-transform: capitalize;
+}
+
+.tags::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+
+.tags::-webkit-scrollbar-track {
+  background: var(--col-white);
+  border-radius: 2rem;
+}
+
+.tags::-webkit-scrollbar-thumb {
+  background: var(--col-light);
+  border-radius: 2rem;
+}
+
+.tags::-webkit-scrollbar-thumb:hover {
+  background: var(--col-black);
+}
+
+/* CONTACT */
+
+.contact {
+  padding: 3rem;
+  font-family: "Open Sans", sans-serif;
+  background: var(--col-dark);
+  color: var(--col-white);
+}
+
+.contact > div {
+  width: max-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact .icon {
+  display: flex;
+  align-items: center;
+}
+
+.contact .fa-solid {
+  font-size: 2rem;
+  margin-right: 0.5rem;
+
+  color: var(--col-light);
+}
+
+.contact .icon:first-of-type {
+  transform: translateX(-2.5%);
+}

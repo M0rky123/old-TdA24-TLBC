@@ -16,7 +16,7 @@ footer {
   height: 5rem;
   background: var(--col-dark);
   color: var(--col-white);
-  font-family: "Lalezar";
+  font-family: "Open Sans" sans-serif;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@ footer {
 #logo {
   width: 5rem;
   height: 5rem;
-  background-image: url("../img/logo_white.svg");
+  background-image: url("../img/logo.svg");
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -124,7 +124,7 @@ footer {
 
 .tags {
   display: flex;
-  padding: 0 3rem;
+  padding: 0 3rem 3rem 3rem;
 }
 
 .tags .fa-solid {
@@ -151,10 +151,6 @@ footer {
   padding: 0.5rem 1rem;
   border-radius: 20rem;
   background: var(--col-dark);
-}
-
-footer span {
-  font-size: 0.75rem;
 }
 
 @media only screen and (min-width: 260px) and (max-width: 767px) {
