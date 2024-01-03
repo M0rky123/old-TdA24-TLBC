@@ -117,7 +117,7 @@ def create_tag_if_not_exist(tag_name):
         if data:
             return data
         else:
-            date = add_tag_to_db(tag_name)
+            data = add_tag_to_db(tag_name)
             return data
             
 

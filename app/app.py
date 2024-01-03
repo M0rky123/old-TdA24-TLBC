@@ -30,8 +30,11 @@ def api():
 @app.route('/api/lecturers', methods=['POST'] )
 async def createlec():
     data = request.json
-
-    uuid = data.get('UUID')
+    
+    uuid = data.get('uuid')
+    if uuid == None:
+        uuid = str(uuid.uuid4())
+        data['uuid'] = uuid
     title_before = data.get('title_before')
     name = data.get('first_name')
     middle_name = data.get('middle_name')
@@ -49,10 +52,11 @@ async def createlec():
     for tag in tags:
         tag.pop
         tag = create_tag_if_not_exist(tag["name"])
+        tags.append(tag)
         
     add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, uuid, email, phone, tags)
 
-    return data, 200
+    return jsonify(data), 200
 
 @app.route('/api/lecturers', methods=['GET'] )
 async def getalllec():
