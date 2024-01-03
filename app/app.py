@@ -28,43 +28,28 @@ def api():
 
 ########### API ###########
 
-def process_field(data, field_name, default_value=None):
-    field_value = data.get(field_name)
-    if field_value is None:
-        field_value = default_value
-    elif field_value == "":
-        field_value = None
-
-    return field_value
-
 @app.route('/api/lecturers', methods=['POST'] )
 async def createlec():
     data = request.json
-
-    # UUID Generation
-    uuid = data.get('uuid') or str(uuidgen.uuid4())
-    data['uuid'] = uuid
-
-    title_before = process_field(data, 'title_before')
-    name = process_field(data, 'first_name')
-    middle_name = process_field(data, 'middle_name')
-    last_name = process_field(data, 'last_name')
-    title_after = process_field(data, 'title_after')
-    picture_url = process_field(data, 'picture_url')
-    location = process_field(data, 'location')
-    claim = process_field(data, 'claim')
-    bio = process_field(data, 'bio')
-    price = process_field(data, 'price_per_hour')
+    
+    uuid = data.get('uuid')
+    if not uuid:
+        uuid = str(uuidgen.uuid4())
+        data['uuid'] = uuid
+    title_before = data.get('title_before')
+    name = data.get('first_name')
+    middle_name = data.get('middle_name')
+    last_name = data.get('last_name')
+    title_after = data.get('title_after')
+    picture_url = data.get('picture_url')
+    location = data.get('location')
+    claim = data.get('claim')
+    bio = data.get('bio')
+    price = data.get('price_per_hour')
+    email = data.get('contact', {}).get('emails', [])
+    phone = data.get('contact', {}).get('telephone_numbers', [])
     tags = data.get('tags', [])
     new_tags = []
-
-    if not name or not last_name:
-        return {"error": "Missing mandatory fields: 'first_name' or 'last_name'"}, 400
-
-    contact_info = data.get('contact', {})
-    emails = contact_info.get('emails', [])
-    telephone_numbers = contact_info.get('telephone_numbers', [])
-
     for tag in tags:
         if isinstance(tag, dict):
             tag_name = tag.pop("name", None)
@@ -74,9 +59,8 @@ async def createlec():
     tags = new_tags
     data['tags'] = tags
         
-    add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, uuid, email, phone, tags)
+    add_kantor(title_before, name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, uuid, email, phone, tags)
 
-    print(data)
     return data, 200
 
 @app.route('/api/lecturers', methods=['GET'] )

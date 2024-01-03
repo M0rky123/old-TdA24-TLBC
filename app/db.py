@@ -137,11 +137,7 @@ def create_tag_if_not_exist(tag_name):
         else:
             data = add_tag_to_db(tag_name)
             return data
-
-
-            
-
-    
+   
 def add_kantor(title_before: None, name, middle_name: None, last_name, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
