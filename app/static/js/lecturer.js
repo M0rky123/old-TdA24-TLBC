@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
     })
   );
 
-  setTimeout(function () {
-    document.documentElement.style.setProperty("--child-max-width", "0");
-    document.documentElement.style.setProperty("--child-max-width", maxWidth + "px");
-  }, 500);
+  document.documentElement.style.setProperty("--child-max-width", "0");
+  document.documentElement.style.setProperty("--child-max-width", maxWidth + "px");
 });

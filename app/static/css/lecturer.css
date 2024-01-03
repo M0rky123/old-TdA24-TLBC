@@ -5,6 +5,7 @@ span,
 li,
 p {
   font-family: "Open Sans";
+  color: var(--col-white);
 }
 
 /* HEADER */
@@ -12,7 +13,7 @@ p {
 header,
 footer {
   width: 100%;
-  height: 96px;
+  height: 5rem;
   background: var(--col-dark);
   color: var(--col-white);
   font-family: "Lalezar";
@@ -24,8 +25,8 @@ footer {
 }
 
 #logo {
-  width: 96px;
-  height: 96px;
+  width: 5rem;
+  height: 5rem;
   background-image: url("../img/logo_white.svg");
   background-position: center;
   background-repeat: no-repeat;
@@ -34,9 +35,8 @@ footer {
 /* PROFILE OF THE LECTOR */
 
 .profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  place-items: center;
   padding: 0 3rem;
 }
 
@@ -45,7 +45,6 @@ footer {
   max-height: 15rem;
   border-radius: 50%;
   margin: 4rem auto;
-  box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.6);
 }
 
 .profile > h1 {
@@ -58,7 +57,6 @@ footer {
 .profile > h2 {
   font-weight: 400;
   font-size: 24px;
-  color: var(--col-white);
   margin-top: 0.5rem;
   text-align: center;
 }
@@ -79,38 +77,29 @@ footer {
 }
 
 .table {
-  aspect-ratio: 1/1;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  flex-shrink: 0;
+  display: grid;
+  gap: 1rem 0;
+  align-content: space-between;
   padding: 3rem;
   border-radius: 1.5rem;
   background: var(--col-dark);
-  box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.6);
 }
 
 .table-info {
   display: flex;
-  flex-basis: 0;
 }
 
-.table span,
-.table ul {
-  color: var(--col-white);
-  list-style-type: none;
+.table-info li,
+.table-info span {
+  white-space: nowrap;
   font-size: 16px;
 }
 
-.table li:not(:last-of-type) {
-  margin-bottom: 2px;
+.table ul {
+  list-style-type: none;
 }
 
-.table > div:not(:last-of-type) {
-  margin-bottom: 1rem;
-}
-
-.table .fa-solid {
+.table-info .fa-solid {
   color: var(--col-light);
   font-size: 1.5rem;
 }
@@ -119,20 +108,16 @@ footer {
   display: flex;
   justify-content: center;
   width: 1.5rem;
-  margin-right: 1rem;
+  margin-right: 0.75rem;
 }
 
 .bio {
-  display: flex;
-  align-items: center;
   text-align: justify;
 }
 
 .info p {
-  font-size: 1.125rem;
-  font-weight: 400;
-  line-height: 1.5rem;
-  color: var(--col-white);
+  font-size: 1rem;
+  line-height: 1.45rem;
 }
 
 /* TAGS */
@@ -144,35 +129,32 @@ footer {
 
 .tags .fa-solid {
   color: var(--col-light);
-  font-size: 35.2px;
+  font-size: 2.25rem;
 }
 
 .tags .icon {
-  display: flex;
-  justify-content: center;
   width: 3rem;
 }
 
 .tags ul {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
   gap: 1rem;
   list-style: none;
   font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .tags li {
   white-space: nowrap;
-  width: min-content;
-  height: min-content;
   padding: 0.5rem 1rem;
   border-radius: 20rem;
-  color: var(--col-white);
   background: var(--col-dark);
-  box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.6);
+}
+
+footer span {
+  font-size: 0.75rem;
 }
 
 @media only screen and (min-width: 260px) and (max-width: 767px) {
@@ -189,12 +171,12 @@ footer {
 
   header,
   footer {
-    height: 48px;
+    height: 4rem;
   }
 
   #logo {
-    width: 48px;
-    height: 48px;
+    width: 4rem;
+    height: 4rem;
   }
 
   #profile-picture {
@@ -215,40 +197,37 @@ footer {
     margin-top: 1.5rem;
   }
 
-  .table .fa-solid {
+  .table-info .fa-solid {
     font-size: 1rem;
   }
 
   .icon {
-    margin-right: 0.5rem;
+    margin-right: 0.15rem;
   }
 
   .info {
     flex-direction: column;
     gap: 1rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding: 2rem;
   }
 
   .table {
-    aspect-ratio: 0;
     padding: 1.5rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--child-max-width), 50%));
   }
 
-  .table span,
-  .table ul {
-    font-size: 0.85rem;
+  .table-info {
+    padding-right: 0.5rem;
   }
 
-  .table > div:not(:last-of-type) {
-    margin-bottom: 0.5rem;
+  .table-info span,
+  .table-info li {
+    font-size: 0.85rem;
   }
 
   .info p {
     font-size: 0.85rem;
-    line-height: 1.35rem;
   }
 
   .tags {
@@ -260,10 +239,6 @@ footer {
     padding-bottom: 1rem;
   }
 
-  .tags .fa-solid {
-    font-size: 2rem;
-  }
-
   .tags ul {
     gap: 0.5rem;
   }
@@ -273,9 +248,5 @@ footer {
     text-align: center;
     font-size: 0.75rem;
     width: 100%;
-  }
-
-  footer span {
-    font-size: 0.75rem;
   }
 }
