@@ -67,55 +67,23 @@ async def createlec():
 async def getalllec():
     return select_all_kantori()
 
-@app.route('/add_tag', methods=['GET', 'POST'])
-def add_tag():
-    if request.method == 'POST':
-        tag_name = request.form['tag_name']
-        tag_id = request.form['tag_id']
-
-        add_tag_to_db(tag_name, tag_id)
-    
-    return render_template('add_tag.html')
-
-
-
-@app.route('/add', methods=['GET', 'POST'])
-def add():
-    if request.method == 'POST':
-        title_before = request.form['title_before']
-        name = request.form['name']
-        middle_name = request.form['middle_name']
-        surname = request.form['surname']
-        title_after = request.form['title_after']
-        picture_url = request.form['picture_url']
-        price = request.form['price']
-        location = request.form['location']
-        claim = request.form['claim']
-        bio = request.form['bio']
-        email = request.form['email']
-        phone = request.form['phone']
-        tags = request.form.getlist('option')  # Assuming 'item' is a list in the form
-
-
-        items.extend(tags)
-        print(items)
-        add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, email, phone, items)
-
-    existing_tags = get_all_tags()
-    return render_template('add_kantor.html', existing_tags=existing_tags)
-
-items = []
-@app.route('/add_item', methods=['POST'])
-def add_item():
-    item = request.json['item']
-    
-    items.append(item)
-    return jsonify(items=items)
-
-@app.route('/api/lecturers/<lector_id>', methods=['GET'] )
-def getlector(lector_id):
+@app.route('/api/lecturers/<lector_id>', methods=['GET'])
+async def getlec(lector_id):
     data = select_kantor(lector_id)
-    return data
+    if data:
+        return data, 200
+    else:
+        return {"status": "not found"}, 404
+
+@app.route('/api/lecturers/<lector_id>', methods=['DELETE'])
+async def deletelec(lector_id):
+    data = select_kantor(lector_id)
+    if data:
+        delete_kantor(lector_id)
+        return {"status": "deleted"}, 200
+    else:
+        return {"status": "not found"}, 404
+
 
 
 ########### FrontEnd ###########
