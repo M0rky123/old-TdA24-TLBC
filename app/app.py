@@ -32,32 +32,30 @@ def api():
 async def createlec():
     data = request.json
 
-    # This is just for debug
-    headers = {'Content-Type': 'application/json'}
-    payload = {'content': data}
+    # UUID Generation
+    uuid = data.get('uuid') or str(uuidgen.uuid4())
+    data['uuid'] = uuid
 
-    response = requests.post("https://discord.com/api/webhooks/1192017436954853516/LHEO1OAe47sq1NyW9tirol0od5rXCPysQWsEvr9-D5UmCuph7FFxx_XBrdsTUyftZNiW", data=json.dumps(payload), headers=headers)
-
-    
-    uuid = data.get('uuid')
-    if uuid == None:
-        uuid = str(uuidgen.uuid4())
-        data['uuid'] = uuid
-    title_before = data.get('title_before')
-    name = data.get('first_name')
-    middle_name = data.get('middle_name')
-    surname = data.get('last_name')
-    title_after = data.get('title_after')
-    picture_url = data.get('picture_url')
-    location = data.get('location')
-    claim = data.get('claim')
-    bio = data.get('bio')
-    price = data.get('price_per_hour')
-    email = data.get('contact', {}).get('emails', [])
-    phone = data.get('contact', {}).get('telephone_numbers', [])
+    title_before = process_field(data, 'title_before')
+    name = process_field(data, 'first_name')
+    middle_name = process_field(data, 'middle_name')
+    last_name = process_field(data, 'last_name')
+    title_after = process_field(data, 'title_after')
+    picture_url = process_field(data, 'picture_url')
+    location = process_field(data, 'location')
+    claim = process_field(data, 'claim')
+    bio = process_field(data, 'bio')
+    price = process_field(data, 'price_per_hour')
     tags = data.get('tags', [])
-    print(type(tags))
     new_tags = []
+
+    if not name or not last_name:
+        return {"error": "Missing mandatory fields: 'first_name' or 'last_name'"}, 400
+
+    contact_info = data.get('contact', {})
+    emails = contact_info.get('emails', [])
+    telephone_numbers = contact_info.get('telephone_numbers', [])
+
     for tag in tags:
         if isinstance(tag, dict):
             tag_name = tag.pop("name", None)
