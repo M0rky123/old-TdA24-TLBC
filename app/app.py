@@ -3,7 +3,7 @@ import json
 import requests
 from flask import Flask, render_template, request, jsonify
 from . import db
-from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist
+from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist, delete_kantor
 import uuid as uuidgen
 
 logo = "./static/img/logo_white.png"
