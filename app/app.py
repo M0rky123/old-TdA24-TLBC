@@ -56,7 +56,7 @@ async def createlec():
         
     add_kantor(title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, uuid, email, phone, tags)
 
-    return jsonify(data), 200
+    return data, 200
 
 @app.route('/api/lecturers', methods=['GET'] )
 async def getalllec():
