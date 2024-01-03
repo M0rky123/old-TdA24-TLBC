@@ -90,7 +90,8 @@ footer {
   box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.6);
 }
 
-.table > div {
+.table-info {
+  display: flex;
   flex-basis: 0;
 }
 
@@ -103,10 +104,6 @@ footer {
 
 .table li:not(:last-of-type) {
   margin-bottom: 2px;
-}
-
-.table > div {
-  display: flex;
 }
 
 .table > div:not(:last-of-type) {
@@ -178,7 +175,7 @@ footer {
   box-shadow: 3px 4px 5px 0px rgba(51, 51, 51, 0.6);
 }
 
-@media only screen and (min-width: 300px) and (max-width: 767px) {
+@media only screen and (min-width: 260px) and (max-width: 767px) {
   .profile,
   .info,
   .tags {
@@ -236,12 +233,13 @@ footer {
   .table {
     aspect-ratio: 0;
     padding: 1.5rem;
-    justify-content: start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--child-max-width), 50%));
   }
 
   .table span,
   .table ul {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .table > div:not(:last-of-type) {

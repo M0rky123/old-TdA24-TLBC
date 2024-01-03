@@ -27,19 +27,19 @@
     </div>
     <div class="info">
       <div class="table">
-        <div class="location">
+        <div class="table-info location">
           <span class="icon">
             <i class="fa-solid fa-location-dot"></i>
           </span>
           <span>{{ lecturer.location }}</span>
         </div>
-        <div class="price">
+        <div class="table-info price">
           <span class="icon">
             <i class="fa-solid fa-coins"></i>
           </span>
           <span>{{ lecturer.price_per_hour }} Kč / hod.</span>
         </div>
-        <div class="tel">
+        <div class="table-info tel">
           <span class="icon">
             <i class="fa-solid fa-square-phone"></i>
           </span>
@@ -49,7 +49,7 @@
             {% endfor %}
           </ul>
         </div>
-        <div class="mail">
+        <div class="table-info mail">
           <span class="icon">
             <i class="fa-solid fa-envelope"></i>
           </span>
@@ -83,5 +83,6 @@
 
 
   <script src="https://kit.fontawesome.com/7ba72c0f9b.js" crossorigin="anonymous"></script>
+  <script src="../static/js/lecturer.js"></script>
 </body>
 </html>
