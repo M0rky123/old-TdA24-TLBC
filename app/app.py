@@ -28,6 +28,15 @@ def api():
 
 ########### API ###########
 
+def process_field(data, field_name, default_value=None):
+    field_value = data.get(field_name)
+    if field_value is None:
+        field_value = default_value
+    elif field_value == "":
+        field_value = None
+
+    return field_value
+
 @app.route('/api/lecturers', methods=['POST'] )
 async def createlec():
     data = request.json

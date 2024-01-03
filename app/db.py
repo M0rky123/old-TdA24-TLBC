@@ -20,11 +20,11 @@ CREATE TABLE IF NOT EXISTS kantori (
   title_before TEXT,
   first_name TEXT NOT NULL,
   middle_name TEXT,
-  surname TEXT NOT NULL,
+  last_name TEXT NOT NULL,
   title_after TEXT,
   picture_url TEXT,
   price INTEGER,
-  loc TEXT,
+  location TEXT,
   claim TEXT,
   bio TEXT,
   email TEXT NOT NULL,
@@ -83,9 +83,9 @@ def select_all_kantori():
         for lector in data:
             lector.pop("id", None)
             lector["UUID"] = lector.pop("uuid", None)
-            lector["last_name"] = lector.pop("surname", None)
+            lector["last_name"] = lector.pop("last_name", None)
             lector["picture_url"] = lector.pop("picture_url", None)
-            lector["location"] = lector.pop("loc", None)
+            lector["location"] = lector.pop("location", None)
             lector["claim"] = lector.pop("claim", None)
             lector["bio"] = lector.pop("bio", None)
             lector["tags"] = eval(lector.pop("tags", None))
@@ -103,12 +103,27 @@ def select_kantor(uuid):
         cursor.execute("SELECT * FROM kantori WHERE uuid = ?", (uuid,))
         data = cursor.fetchone()
         if data:
+            data["price_per_hour"] = data.pop("price", None)
             data["tags"] = eval(data["tags"])
-            data["phone"] = eval(data["phone"])
-            data["email"] = eval(data["email"])
+            data["contact"] = {
+                "telephone_numbers": eval(data.pop("phone", [])),
+                "emails": eval(data.pop("email", []))
+            }
             return data
         else: 
             abort(404)
+
+def update_kantor(uuid, data):
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("UPDATE kantori SET title_before = ?, first_name = ?, middle_name = ?, last_name = ?, picture_url = ?, title_after = ?, price = ?, location = ?, claim = ?, bio = ?, email = ?, phone = ?, tags = ? WHERE uuid = ?", (data['title_before'], data['first_name'], data['middle_name'], data['last_name'], data['picture_url'], data['title_after'], data['price_per_hour'], data['location'], data['claim'], data['bio'], str(data['contact']['emails']), str(data['contact']['telephone_numbers']), str(data['tags']), uuid))
+        connection.commit()
+
+def delete_kantor(uuid):
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM kantori WHERE uuid = ?", (uuid,))
+        connection.commit()
 
 def create_tag_if_not_exist(tag_name):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
@@ -122,19 +137,20 @@ def create_tag_if_not_exist(tag_name):
         else:
             data = add_tag_to_db(tag_name)
             return data
+
+
             
 
     
-def add_kantor(title_before: None, name, middle_name: None, surname, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
+def add_kantor(title_before: None, name, middle_name: None, last_name, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, surname, picture_url, title_after, price, loc, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, surname, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
+        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
         
     connection.commit()
 
-def add_tag_to_db(name, uuid: None):
-    if uuid == None:
-        uuid = str(uuidgen.uuid4())
+def add_tag_to_db(name):
+    uuid = str(uuidgen.uuid4())
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("INSERT INTO tags (tag_name, tag_id) VALUES (?, ?)", (name, uuid))
