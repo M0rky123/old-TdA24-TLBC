@@ -125,8 +125,20 @@ def update_kantor(uuid, data):
         lector_exists = cursor.fetchone()
 
         if lector_exists:
-            cursor.execute("UPDATE kantori SET title_before = ?, first_name = ?, middle_name = ?, last_name = ?, picture_url = ?, title_after = ?, price = ?, location = ?, claim = ?, bio = ?, email = ?, phone = ?, tags = ? WHERE uuid = ?", (data['title_before'], data['first_name'], data['middle_name'], data['last_name'], data['picture_url'], data['title_after'], data['price_per_hour'], data['location'], data['claim'], data['bio'], str(data['contact']['emails']), str(data['contact']['telephone_numbers']), str(data['tags']), uuid))
+            cursor.execute("DELETE FROM kantori WHERE uuid = ?", (uuid,))
+            cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
+            data["uuid"] = uuid
             connection.commit()
+            new_tags = []
+            for tag in tags:
+                if isinstance(tag, dict):
+                    tag_name = tag.pop("name", None)
+                    if tag_name:
+                        new_tag = create_tag_if_not_exist(tag_name)
+                        new_tags.append(new_tag)
+            tags = new_tags
+            data['tags'] = tags
+
             return data, 200
         else:
             return {"status": "not found"}, 404
