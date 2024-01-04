@@ -119,17 +119,23 @@ def select_kantor(uuid):
 
 def update_kantor(uuid, data):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
+
 
         cursor.execute("SELECT * FROM kantori WHERE uuid = ?", (uuid,))
         lector_exists = cursor.fetchone()
 
         if lector_exists:
+            for key in data.keys():
+                if data[key] is None:
+                    data[key] = ""
             cursor.execute("DELETE FROM kantori WHERE uuid = ?", (uuid,))
-            cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
+            cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (data["title_before"], data["first_name"], data["middle_name"], data["last_name"], data["picture_url"], data["title_after"], data["price_per_hour"], data["location"], data["claim"], data["bio"], str(data["contact"]["emails"]), str(data["contact"]["telephone_numbers"]), str(uuid), str(data["tags"])))
             data["uuid"] = uuid
             connection.commit()
             new_tags = []
+            tags = data["tags"]
             for tag in tags:
                 if isinstance(tag, dict):
                     tag_name = tag.pop("name", None)
