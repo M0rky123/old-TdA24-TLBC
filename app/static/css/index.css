@@ -82,7 +82,7 @@ h3::after {
   background: var(--col-black);
   color: var(--col-white);
   border: 3px solid var(--col-white);
-  outline: none;
+  outline: 0;
   transform: translateY(-5%);
 }
 
@@ -191,7 +191,8 @@ h3::after {
 .info-icons {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 1rem;
+  justify-content: flex-start;
 }
 
 .info-icons i {
@@ -209,7 +210,8 @@ h3::after {
 
 .tags {
   padding: 0.5rem 0 0.35rem 0;
-  overflow-x: scroll;
+  overflow-x: auto;
+  flex: 1;
 }
 
 .tags ul {
@@ -226,6 +228,7 @@ h3::after {
   background: var(--col-yellow);
   color: var(--col-black);
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .tags::-webkit-scrollbar {
@@ -246,8 +249,6 @@ h3::after {
 
 .tags::-webkit-scrollbar-thumb:hover {
   background: var(--col-black);
-  outline: none;
-  border: none;
 }
 
 .card a {
@@ -260,14 +261,36 @@ h3::after {
 .card a:focus .icon {
   transform: rotate(-45deg);
   transition: transform 150ms;
+}
+
+.card a:hover,
+.card a:focus {
   outline: 0;
-  border: 0;
+}
+
+.card a:hover .visit,
+.card a:focus .visit {
+  background: var(--col-white);
+  border-color: var(--col-light);
+}
+
+.card a:hover span,
+.card a:focus span {
+  color: var(--col-light);
+}
+
+.card a:hover .icon,
+.card a:focus .icon {
+  color: var(--col-white);
+  background: var(--col-light);
 }
 
 .card > div:last-of-type {
   display: flex;
+  justify-content: space-between;
   gap: 1rem;
 }
+
 .visit {
   display: flex;
   align-items: center;
@@ -276,6 +299,7 @@ h3::after {
   white-space: nowrap;
   text-transform: capitalize;
   background: var(--col-light);
+  border: 2px solid var(--col-light);
   padding: 0.25rem 0.5rem;
   border-radius: 20rem;
 }
@@ -294,6 +318,7 @@ h3::after {
   border-radius: 50%;
   color: var(--col-light);
   background: var(--col-white);
+  transition: all 150ms;
 }
 
 /* CONTACT */
