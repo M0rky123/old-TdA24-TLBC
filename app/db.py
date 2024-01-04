@@ -120,8 +120,16 @@ def select_kantor(uuid):
 def update_kantor(uuid, data):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
-        cursor.execute("UPDATE kantori SET title_before = ?, first_name = ?, middle_name = ?, last_name = ?, picture_url = ?, title_after = ?, price = ?, location = ?, claim = ?, bio = ?, email = ?, phone = ?, tags = ? WHERE uuid = ?", (data['title_before'], data['first_name'], data['middle_name'], data['last_name'], data['picture_url'], data['title_after'], data['price_per_hour'], data['location'], data['claim'], data['bio'], str(data['contact']['emails']), str(data['contact']['telephone_numbers']), str(data['tags']), uuid))
-        connection.commit()
+
+        cursor.execute("SELECT * FROM kantori WHERE uuid = ?", (uuid,))
+        lector_exists = cursor.fetchone()
+
+        if lector_exists:
+            cursor.execute("UPDATE kantori SET title_before = ?, first_name = ?, middle_name = ?, last_name = ?, picture_url = ?, title_after = ?, price = ?, location = ?, claim = ?, bio = ?, email = ?, phone = ?, tags = ? WHERE uuid = ?", (data['title_before'], data['first_name'], data['middle_name'], data['last_name'], data['picture_url'], data['title_after'], data['price_per_hour'], data['location'], data['claim'], data['bio'], str(data['contact']['emails']), str(data['contact']['telephone_numbers']), str(data['tags']), uuid))
+            connection.commit()
+            return data, 200
+        else:
+            return {"status": "not found"}, 404
 
 def delete_kantor(uuid):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:

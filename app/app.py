@@ -85,6 +85,14 @@ async def deletelec(lector_id):
     else:
         return {"status": "not found"}, 404
 
+@app.route('/api/lecturers/<lector_id>', methods=['PUT'])
+async def updatelec(lector_id):
+    data = request.json
+    if data:
+        update_kantor(lector_id, data)
+        return {"status": "updated"}, 200
+    else:
+        return {"status": "not found"}, 404
 
 
 ########### FrontEnd ###########
