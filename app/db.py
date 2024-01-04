@@ -82,14 +82,14 @@ def select_all_kantori():
         data = cursor.fetchall()
         for lector in data:
             lector.pop("id", None)
-            lector["uuid"] = lector.pop("uuid", "")
-            lector["last_name"] = lector.pop("last_name", "")
-            lector["picture_url"] = lector.pop("picture_url", "")
-            lector["location"] = lector.pop("location", "")
-            lector["claim"] = lector.pop("claim", "")
-            lector["bio"] = lector.pop("bio", "")
-            lector["tags"] = eval(lector.pop("tags", ""))
-            lector["price_per_hour"] = lector.pop("price", "")
+            lector["uuid"] = lector.pop("uuid", None)
+            lector["last_name"] = lector.pop("last_name", None)
+            lector["picture_url"] = lector.pop("picture_url", None)
+            lector["location"] = lector.pop("location", None)
+            lector["claim"] = lector.pop("claim", None)
+            lector["bio"] = lector.pop("bio", None)
+            lector["tags"] = eval(lector.pop("tags", None))
+            lector["price_per_hour"] = lector.pop("price", None)
             lector["contact"] = {
                 "telephone_numbers": eval(lector.pop("phone", [])),
                 "emails": eval(lector.pop("email", []))
