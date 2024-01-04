@@ -82,18 +82,22 @@ def select_all_kantori():
         data = cursor.fetchall()
         for lector in data:
             lector.pop("id", None)
-            lector["uuid"] = lector.pop("uuid", None)
-            lector["last_name"] = lector.pop("last_name", None)
-            lector["picture_url"] = lector.pop("picture_url", None)
-            lector["location"] = lector.pop("location", None)
-            lector["claim"] = lector.pop("claim", None)
-            lector["bio"] = lector.pop("bio", None)
-            lector["tags"] = eval(lector.pop("tags", None))
-            lector["price_per_hour"] = lector.pop("price", None)
+            lector["uuid"] = lector.pop("uuid", "")
+            lector["last_name"] = lector.pop("last_name", "")
+            lector["picture_url"] = lector.pop("picture_url", "")
+            lector["location"] = lector.pop("location", "")
+            lector["claim"] = lector.pop("claim", "")
+            lector["bio"] = lector.pop("bio", "")
+            lector["tags"] = eval(lector.pop("tags", ""))
+            lector["price_per_hour"] = lector.pop("price", "")
             lector["contact"] = {
                 "telephone_numbers": eval(lector.pop("phone", [])),
                 "emails": eval(lector.pop("email", []))
             }
+
+            for key in lector.keys():
+                if lector[key] is None:
+                    lector[key] = ""
         return data
 
 def select_kantor(uuid):
@@ -138,7 +142,7 @@ def create_tag_if_not_exist(tag_name):
             data = add_tag_to_db(tag_name)
             return data
    
-def add_kantor(title_before: None, name, middle_name: None, last_name, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
+def add_kantor(title_before: "", name, middle_name: "", last_name, picture_url: "", title_after: "", price: "", location: "", claim: "", bio: "", uuid = str, email = list, phone = list, tags: None = list):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))

@@ -3,41 +3,38 @@ import json
 
 url = "http://127.0.0.1:5000/api/lecturers"
 
-# Your JSON data
-data = {
-    "UUID": "67fda282-2bca-41ef-9caf-039cc5c8dd69",
-    "title_before": "Mgr.",
-    "first_name": "Petra",
-    "middle_name": "Swil",
-    "last_name": "Plachá",
-    "title_after": "MBA",
-    "picture_url": "https://tourdeapp.cz/storage/images/2023_02_25/412ff296a291f021bbb6de10e8d0b94863fa89308843b/big.png.webp",
-    "location": "Brno",
-    "claim": "Aktivní studentka / Předsedkyně spolku / Projektová manažerka",
-    "bio": "Baví mě organizovat věci. Ať už to bylo vyvíjení mobilních aplikací ve Futured, pořádání konferencí, spolupráce na soutěžích Prezentiáda, pIšQworky, Tour de App a Středoškolák roku, nebo třeba dobrovolnictví, vždycky jsem skončila u projektového managementu, rozvíjení soft-skills a vzdělávání. U studentských projektů a akcí jsem si vyzkoušela snad všechno od marketingu po logistiku a moc ráda to předám dál. Momentálně studuji Pdf MUNI a FF MUNI v Brně.",
+# Your JSON data for POST request
+post_data = {
+    "UUID": "8a2b5f91-1c4e-4d7a-9d86-12ab3cde5f12",
+    "title_before": "Dr.",
+    "first_name": "John",
+    "last_name": "Carson",
+    "picture_url": "https://example.com/profile_picture.png",
+    "location": "Cityville",
+    "claim": "Passionate researcher / Community leader / Tech enthusiast",
+    "bio": "I thrive on exploring new ideas and pushing the boundaries of technology. Whether it's conducting research in cutting-edge fields, leading community initiatives, or diving into the world of tech, I am always eager to contribute and learn. My journey has involved everything from developing innovative software solutions to collaborating on open-source projects. Currently pursuing a PhD in Computer Science at Tech University.",
     "tags": [
-        {"name": "Dobrovolnictví"},
-        {"name": "Studentské spolky"},
-        {"name": "Efektivní učení"},
-        {"name": "Prezentační dovednosti"},
-        {"name": "Marketing pro neziskové studentské projekty"},
-        {"name": "Mimoškolní aktivity"},
-        {"name": "Projektový management, event management"},
-        {"name": "Fundraising pro neziskové studentské projekty"},
+        {"name": "Research"},
+        {"name": "Community Engagement"},
+        {"name": "Technology Enthusiast"},
+        {"name": "Innovation"},
+        {"name": "Open Source"},
+        {"name": "Programming Languages"},
+        {"name": "Artificial Intelligence"},
+        {"name": "Data Science"},
     ],
-    "price_per_hour": 1200,
+    "price_per_hour": 1500,
     "contact": {
-        "telephone_numbers": ["+420 722 482 974"],
-        "emails": ["placha@scg.cz", "predseda@scg.cz"],
+        "telephone_numbers": ["+123 456 7890"],
+        "emails": ["alex.smith@example.com", "contact@alexsmith.com"],
     }
 }
 
 # Convert the data to JSON
-json_data = json.dumps(data)
+json_post_data = json.dumps(post_data)
 
 # Make the POST request
-response = requests.post(url, data=json_data, headers={"Content-Type": "application/json"})
-
-# Print the response
-print(response.status_code)
-print(response.text)
+response_post = requests.post(url, data=json_post_data, headers={"Content-Type": "application/json"})
+print("POST Response:")
+print(response_post.status_code)
+print(response_post.text)
