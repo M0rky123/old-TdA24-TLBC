@@ -74,7 +74,7 @@ h3::after {
   background: var(--col-white);
   color: var(--col-black);
   border: 3px solid var(--col-black);
-  transition: transform 300ms;
+  transition: transform 200ms;
 }
 
 .container nav a:hover,
@@ -124,6 +124,7 @@ h3::after {
   padding: 3rem;
   background: var(--col-dark);
   color: var(--col-white);
+  border-radius: 0 0 1rem 1rem;
 }
 
 .paragraphs {
@@ -229,7 +230,8 @@ h3::after {
 
 .tags::-webkit-scrollbar {
   width: 10px;
-  height: 8px;
+  height: 3px;
+  transition: height 300ms;
 }
 
 .tags::-webkit-scrollbar-track {
@@ -244,6 +246,54 @@ h3::after {
 
 .tags::-webkit-scrollbar-thumb:hover {
   background: var(--col-black);
+  outline: none;
+  border: none;
+}
+
+.card a {
+  height: fit-content;
+  margin: auto 0;
+  text-decoration: none;
+}
+
+.card a:hover .icon,
+.card a:focus .icon {
+  transform: rotate(-45deg);
+  transition: transform 150ms;
+  outline: 0;
+  border: 0;
+}
+
+.card > div:last-of-type {
+  display: flex;
+  gap: 1rem;
+}
+.visit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: fit-content;
+  white-space: nowrap;
+  text-transform: capitalize;
+  background: var(--col-light);
+  padding: 0.25rem 0.5rem;
+  border-radius: 20rem;
+}
+
+.visit span {
+  font-weight: 600;
+  color: var(--col-white);
+}
+
+.visit .icon {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.125rem;
+  border-radius: 50%;
+  color: var(--col-light);
+  background: var(--col-white);
 }
 
 /* CONTACT */
@@ -253,6 +303,7 @@ h3::after {
   font-family: "Open Sans", sans-serif;
   background: var(--col-dark);
   color: var(--col-white);
+  border-radius: 1rem 1rem 0 0;
 }
 
 .contact > div {
@@ -260,21 +311,21 @@ h3::after {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+}
+
+.contact > div > div {
+  display: flex;
 }
 
 .contact .icon {
-  display: flex;
-  align-items: center;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  aspect-ratio: 1 / 1;
+  margin-right: 0.5rem;
 }
 
 .contact .fa-solid {
-  font-size: 2rem;
-  margin-right: 0.5rem;
-
+  font-size: 1.75rem;
   color: var(--col-light);
-}
-
-.contact .icon:first-of-type {
-  transform: translateX(-2.5%);
 }
