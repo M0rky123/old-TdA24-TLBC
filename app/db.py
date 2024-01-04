@@ -82,7 +82,7 @@ def select_all_kantori():
         data = cursor.fetchall()
         for lector in data:
             lector.pop("id", None)
-            lector["UUID"] = lector.pop("uuid", None)
+            lector["uuid"] = lector.pop("uuid", None)
             lector["last_name"] = lector.pop("last_name", None)
             lector["picture_url"] = lector.pop("picture_url", None)
             lector["location"] = lector.pop("location", None)

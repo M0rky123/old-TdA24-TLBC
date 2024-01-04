@@ -16,6 +16,7 @@ app.json.sort_keys = False
 
 db.init_app(app)
 
+######## Fáze 1 ########
 
 #@app.route('/')
 #def hello_world():
@@ -90,7 +91,8 @@ async def deletelec(lector_id):
 
 @app.route('/', methods=['GET'])
 def main():
-    return render_template("index.html")
+    data = select_all_kantori()
+    return render_template("index.html", data = data)
 
 @app.route('/lecturer')
 def lecturer():
@@ -101,9 +103,9 @@ def lecturer():
 
 @app.route('/lecturer/<lector_id>', methods=['GET'])
 def showlec(lector_id):
-    data = getlector(lector_id)
+    data = select_kantor(lector_id)
     if data: 
-        return render_template("lecturer-template.html", lecturer=data)
+        return render_template("lecturer.html", lecturer=data)
     else: 
         return render_template("404.html", lecturer=lector_id)
 
