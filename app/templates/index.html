@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Teacher Digital Agency</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../static/img/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicons/favicon-16x16.png">
+  <link rel="manifest" href="../static/img/favicons/site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -38,55 +42,54 @@
       </div>
     </div>
     <div class="lecturers">
-        <h3>kantoři</h3>
-        <div class="cards">
-            {% for lecturer in data %}
-                <div class="card">
-                    <div class="lecturer">
-                    <img
-                        src={{lecturer.picture_url}}
-                        alt="LECTURER PROFILE PICTURE" width="80px" height="80px">
-                    <div class="info">
-                        <h4>{{lecturer.title_before}} {{lecturer.first_name}} {{lecturer.middle_name}} {{lecturer.last_name}} {{lecturer.title_after}}</h4>
-                        <p>{{lecturer.claim}}</p>
-                        <div class="info-icons">
-                        <div class="location">
-                            <span class="icon">
-                            <i class="fa-solid fa-location-dot"></i>
-                            {{lecturer.location}}
-                            </span>
-                        </div>
-                        <div class="price">
-                            <span class="icon">
-                            <i class="fa-solid fa-coins"></i>
-                            {{lecturer.price_per_hour}}
-                            </span>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                    <div>
-                    <div class="tags tags-container">
-                        <ul>
-                            {% for tag in lecturer.tags %}
-                                <li>{{ tag.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <a href="/lecturer/{{lecturer.uuid}}">
-                        <div class="visit">
-                        <span>zajímá mě</span>
-                        <span class="icon">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </span>
-                        </div>
-                    </a>
-                    </div>
+      <h3>kantoři</h3>
+      <div class="cards">
+        {% for lecturer in data %}
+        <div class="card">
+          <div class="lecturer">
+            <img src={{lecturer.picture_url}} alt="LECTURER PROFILE PICTURE" width="80px" height="80px">
+            <div class="info">
+              <h4>{{lecturer.title_before}} {{lecturer.first_name}} {{lecturer.middle_name}} {{lecturer.last_name}}
+                {{lecturer.title_after}}</h4>
+              <p>{{lecturer.claim}}</p>
+              <div class="info-icons">
+                <div class="location">
+                  <span class="icon">
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{lecturer.location}}
+                  </span>
                 </div>
+                <div class="price">
+                  <span class="icon">
+                    <i class="fa-solid fa-coins"></i>
+                    {{lecturer.price_per_hour}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="tags tags-container">
+              <ul>
+                {% for tag in lecturer.tags %}
+                <li>{{ tag.name }}</li>
                 {% endfor %}
+              </ul>
+            </div>
+            <a href="/lecturer/{{lecturer.uuid}}">
+              <div class="visit">
+                <span>zajímá mě</span>
+                <span class="icon">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </span>
+              </div>
+            </a>
+          </div>
         </div>
-        </div>
+        {% endfor %}
       </div>
+    </div>
+    </div>
     </div>
     <div class="contact">
       <h3>kontakt</h3>

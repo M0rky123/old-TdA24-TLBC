@@ -8,6 +8,12 @@ p {
   color: var(--col-white);
 }
 
+#profile-picture,
+.table,
+.tags li {
+  box-shadow: 5px 5px 20px #222;
+}
+
 /* HEADER */
 
 header,
