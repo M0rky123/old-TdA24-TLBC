@@ -123,7 +123,7 @@ def update_kantor(uuid, data):
         cursor = connection.cursor()
 
 
-        cursor.execute("SELECT * FROM kantori WHERE uuid = ?", (uuid,))
+        cursor.execute("SELECT COUNT(*) FROM kantori WHERE uuid = ?", (uuid,))
         lector_exists = cursor.fetchone()
 
         if lector_exists:
