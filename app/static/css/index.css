@@ -6,7 +6,7 @@ footer {
   height: 5rem;
   background: var(--col-light);
   color: var(--col-white);
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, Helvetica, Arial, sans-serif;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -34,7 +34,7 @@ h3 {
   margin-bottom: 3rem;
   text-align: center;
   text-transform: uppercase;
-  font-family: "Lalezar", sans-serif;
+  font-family: "Lalezar", Helvetica, Arial, sans-serif;
   font-weight: 300;
   font-size: 2rem;
   color: var(--col-white);
@@ -69,7 +69,7 @@ h3::after {
 }
 
 .container nav a {
-  font-family: "Lalezar", sans-serif;
+  font-family: "Lalezar", Helvetica, Arial, sans-serif;
   font-weight: 400;
   text-decoration: none;
   letter-spacing: 0.65px;
@@ -107,7 +107,7 @@ h3::after {
 }
 
 .hero > * {
-  font-family: "Lalezar", sans-serif;
+  font-family: "Lalezar", Helvetica, Arial, sans-serif;
   font-weight: 200;
   text-shadow: var(--col-black) 3px 3px 0;
 }
@@ -136,7 +136,7 @@ h3::after {
 .paragraphs {
   display: grid;
   gap: 2rem;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-weight: 600;
   text-align: justify;
 }
@@ -146,11 +146,12 @@ h3::after {
 .lecturers {
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
+  gap: 1rem;
+  padding: 3rem 0;
 }
 
 .lecturers h4 {
-  font-family: "Lalezar", sans-serif;
+  font-family: "Lalezar", Helvetica, Arial, sans-serif;
   font-size: 1.25rem;
   font-weight: 400;
   line-height: 1.15rem;
@@ -161,7 +162,7 @@ h3::after {
 .lecturers p,
 .lecturers span,
 .lecturers li {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-size: 0.8rem;
   color: var(--col-white);
 }
@@ -331,11 +332,66 @@ h3::after {
   transition: all 200ms ease-in-out;
 }
 
+/* CONTROLS */
+
+.controls {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: baseline;
+}
+
+.controls button {
+  display: flex;
+  gap: 0.5rem;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: 20rem;
+  background: var(--col-dark);
+  color: var(--col-white);
+  border: 2px solid var(--col-dark);
+}
+
+.controls button:hover,
+.controls button:focus {
+  background: var(--col-white);
+  color: var(--col-dark);
+}
+
+.controls button:hover .icon,
+.controls button:focus .icon {
+  background: var(--col-dark);
+  color: var(--col-white);
+}
+
+.controls .icon {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--col-white);
+  color: var(--col-dark);
+}
+
+.controls button:first-of-type .icon .fa-solid {
+  transform: translateY(5%);
+}
+
+.controls button:last-of-type .icon .fa-solid {
+  transform: translateY(15%);
+}
+
+.pages {
+  display: flex;
+  gap: 1rem;
+}
+
 /* CONTACT */
 
 .contact {
   padding: 3rem;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   background: var(--col-light);
   color: var(--col-white);
   border-radius: 1rem 1rem 0 0;
