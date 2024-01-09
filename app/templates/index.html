@@ -47,7 +47,7 @@
         {% for lecturer in data %}
         <div class="card">
           <div class="lecturer">
-            <img src={{lecturer.picture_url}} alt="LECTURER PROFILE PICTURE" width="80px" height="80px">
+            <img src="{{ lecturer.picture_url if lecturer.picture_url else 'https://media1.tenor.com/m/QA6mPKs100UAAAAC/caught-in.gif' }}" alt="LECTURER PROFILE PICTURE" width="80px" height="80px">
             <div class="info">
               <h4>{{lecturer.title_before}} {{lecturer.first_name}} {{lecturer.middle_name}} {{lecturer.last_name}}
                 {{lecturer.title_after}}</h4>

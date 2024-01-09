@@ -3,7 +3,7 @@ import json
 import requests
 from flask import Flask, render_template, request, jsonify
 from . import db
-from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist, delete_kantor, update_kantor
+from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist, delete_kantor, update_kantor,select_kantori_by_key
 import uuid as uuidgen
 
 logo = "./static/img/logo_white.png"
@@ -26,12 +26,27 @@ db.init_app(app)
 def api():
     return {"secret":"The cake is a lie"}
 
+def validate_required_fields(data):
+    required_fields = ['first_name', 'last_name', 'contact']
+    for field in required_fields:
+        if data.get(field) is None:
+            return False
+    contact_info = data.get('contact', {})
+    if not contact_info.get('emails') or not contact_info.get('telephone_numbers'):
+        return False
+    return True
+
 
 ########### API ###########
+
+
 
 @app.route('/api/lecturers', methods=['POST'] )
 async def createlec():
     data = request.json
+
+    if not validate_required_fields(data):
+        return jsonify({"error": "Missing required fields"}), 400
     
     uuid = data.get('uuid')
     if not uuid:
@@ -60,7 +75,7 @@ async def createlec():
     tags = new_tags
     data['tags'] = tags
         
-    add_kantor(title_before, name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, uuid, email, phone, tags)
+    add_kantor(title_before=title_before, name=name, middle_name=middle_name, last_name=last_name, picture_url=picture_url, title_after=title_after, price=price, location=location, claim=claim, bio=bio, uuid=uuid, email=email, phone=phone, tags=tags)
 
     return data, 200
 
@@ -93,6 +108,12 @@ async def updatelec(lector_id):
         return {"status": "updated"}, 200
     else:
         return {"status": "not found"}, 404
+    
+@app.route('/api/lecturers/main/<offset>', methods=['GET'])
+async def getsixlec(offset):
+    data = select_kantori_by_key(offset)
+    if data:
+        return data, 200
 
 
 ########### FrontEnd ###########
