@@ -4,7 +4,7 @@ header,
 footer {
   width: 100%;
   height: 5rem;
-  background: var(--col-dark);
+  background: var(--col-light);
   color: var(--col-white);
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
@@ -21,6 +21,12 @@ footer {
   background-image: url("../img/logo.svg");
   background-position: center;
   background-repeat: no-repeat;
+  transition: transform 300ms ease-in-out;
+}
+
+#logo:focus {
+  outline: 0;
+  transform: scale(1.1);
 }
 
 h3 {
@@ -42,7 +48,7 @@ h3::after {
   transform: translateX(-50%);
   width: 35%;
   height: 1.5px;
-  background: var(--col-light);
+  background: var(--col-white);
 }
 
 /* NAVIGATION */
@@ -64,24 +70,24 @@ h3::after {
 
 .container nav a {
   font-family: "Lalezar", sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   text-decoration: none;
+  letter-spacing: 0.65px;
   flex: 1;
   padding: 0.5rem 0.75rem;
   border-radius: 20rem;
   text-align: center;
   text-transform: capitalize;
-  background: var(--col-white);
-  color: var(--col-black);
-  border: 3px solid var(--col-black);
-  transition: transform 200ms;
+  background: var(--col-dark);
+  color: var(--col-white);
+  border: 2px solid var(--col-dark);
+  transition: transform 200ms ease-in-out;
 }
 
 .container nav a:hover,
 .container nav a:focus {
-  background: var(--col-black);
-  color: var(--col-white);
-  border: 3px solid var(--col-white);
+  background: var(--col-white);
+  color: var(--col-dark);
   outline: 0;
   transform: translateY(-5%);
 }
@@ -122,7 +128,7 @@ h3::after {
 .about-us {
   width: 100%;
   padding: 3rem;
-  background: var(--col-dark);
+  background: var(--col-light);
   color: var(--col-white);
   border-radius: 0 0 1rem 1rem;
 }
@@ -131,6 +137,8 @@ h3::after {
   display: grid;
   gap: 2rem;
   font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  text-align: justify;
 }
 
 /* LECTURERS */
@@ -146,7 +154,7 @@ h3::after {
   font-size: 1.25rem;
   font-weight: 400;
   line-height: 1.15rem;
-  color: var(--col-light);
+  color: var(--col-dark);
   text-transform: capitalize;
 }
 
@@ -154,7 +162,7 @@ h3::after {
 .lecturers span,
 .lecturers li {
   font-family: "Open Sans", sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--col-white);
 }
 
@@ -167,7 +175,7 @@ h3::after {
 .card {
   padding: 1rem;
   border-radius: 1rem;
-  background: var(--col-dark);
+  background: var(--col-light);
   overflow-x: hidden;
 }
 
@@ -184,6 +192,7 @@ h3::after {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 0.125rem;
   text-align: start;
   padding: 0.5rem 0;
 }
@@ -201,11 +210,15 @@ h3::after {
 
 .info-icons .fa-solid {
   font-size: 1rem;
-  color: var(--col-light);
+  color: var(--col-dark);
 }
 
 .info-icons span {
   text-transform: capitalize;
+}
+
+.price .icon {
+  text-transform: none;
 }
 
 .tags {
@@ -225,16 +238,14 @@ h3::after {
   padding: 0.25rem 0.5rem;
   border-radius: 20rem;
   font-weight: 700;
-  background: var(--col-yellow);
-  color: var(--col-black);
+  background: var(--col-dark);
+  color: var(--col-white);
   text-transform: capitalize;
   white-space: nowrap;
 }
 
 .tags::-webkit-scrollbar {
-  width: 10px;
   height: 3px;
-  transition: height 300ms;
 }
 
 .tags::-webkit-scrollbar-track {
@@ -243,7 +254,7 @@ h3::after {
 }
 
 .tags::-webkit-scrollbar-thumb {
-  background: var(--col-light);
+  background: var(--col-dark);
   border-radius: 2rem;
 }
 
@@ -260,7 +271,6 @@ h3::after {
 .card a:hover .icon,
 .card a:focus .icon {
   transform: rotate(-45deg);
-  transition: transform 150ms;
 }
 
 .card a:hover,
@@ -271,18 +281,17 @@ h3::after {
 .card a:hover .visit,
 .card a:focus .visit {
   background: var(--col-white);
-  border-color: var(--col-light);
 }
 
 .card a:hover span,
 .card a:focus span {
-  color: var(--col-light);
+  color: var(--col-yellow);
 }
 
 .card a:hover .icon,
 .card a:focus .icon {
   color: var(--col-white);
-  background: var(--col-light);
+  background: var(--col-yellow);
 }
 
 .card > div:last-of-type {
@@ -298,14 +307,15 @@ h3::after {
   height: fit-content;
   white-space: nowrap;
   text-transform: capitalize;
-  background: var(--col-light);
-  border: 2px solid var(--col-light);
+  background: var(--col-yellow);
+  border: 2px solid var(--col-yellow);
   padding: 0.25rem 0.5rem;
   border-radius: 20rem;
 }
 
 .visit span {
-  font-weight: 600;
+  font-weight: 800;
+  letter-spacing: 0.2px;
   color: var(--col-white);
 }
 
@@ -316,9 +326,9 @@ h3::after {
   height: 1.5rem;
   font-size: 1.125rem;
   border-radius: 50%;
-  color: var(--col-light);
+  color: var(--col-yellow);
   background: var(--col-white);
-  transition: all 150ms;
+  transition: all 200ms ease-in-out;
 }
 
 /* CONTACT */
@@ -326,7 +336,7 @@ h3::after {
 .contact {
   padding: 3rem;
   font-family: "Open Sans", sans-serif;
-  background: var(--col-dark);
+  background: var(--col-light);
   color: var(--col-white);
   border-radius: 1rem 1rem 0 0;
 }
@@ -352,5 +362,5 @@ h3::after {
 
 .contact .fa-solid {
   font-size: 1.75rem;
-  color: var(--col-light);
+  color: var(--col-dark);
 }
