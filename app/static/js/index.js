@@ -1,25 +1,29 @@
-// LECTURERS - PRINT INTO HTML
+// LECTURERS - PRINT INTO html
 
-function lecturersPrint(page) {
-  let cards = document.getElementById("cards");
-  let lecturers = document.createDocumentFragment();
+function lecturerCards() {
+  let currentLecturersPage = 1;
+  let maxLecturersPage = 2;
 
-  cards.innerHTML = "";
+  function printLectCards(page) {
+    let cards = document.getElementById("cards");
+    let lecturers = document.createDocumentFragment();
 
-  fetch(`/api/lecturers/main/${page}`)
-    .then((response) => response.json())
-    .then((json) => {
-      for (let i = 0; i < json.length; i++) {
-        let element = document.createElement("div");
-        element.classList.add("card");
+    cards.innerHTML = "";
 
-        let list = "<ul>";
+    fetch(`/api/lecturers/main/${page}`)
+      .then((response) => response.json())
+      .then((json) => {
+        for (let i = 0; i < json.length; i++) {
+          let element = document.createElement("div");
+          element.classList.add("card");
 
-        for (let j = 0; j < json[i].tags.length; j++) {
-          list += `<li>${json[i].tags[j].name}</li>`;
-        }
-        list += "</ul>";
-        element.innerHTML = `<div class="lecturer">
+          let list = "<ul>";
+
+          for (let j = 0; j < json[i].tags.length; j++) {
+            list += `<li>${json[i].tags[j].name}</li>`;
+          }
+          list += "</ul>";
+          element.innerHTML = `<div class="lecturer">
           <img src="${
             json[i].picture_url ? json[i].picture_url : "https://media1.tenor.com/m/QA6mPKs100UAAAAC/caught-in.gif"
           }" alt="LECTURER PROFILE PICTURE" width="80px" height="80px">
@@ -55,66 +59,61 @@ function lecturersPrint(page) {
             </div>
           </a>
         </div>`;
-        lecturers.appendChild(element);
-      }
-      cards.appendChild(lecturers);
+          lecturers.appendChild(element);
+        }
+        cards.appendChild(lecturers);
+      });
+  }
+
+  function lectCardsPaging(pages) {
+    for (let pagescount = 1; pagescount <= pages; pagescount++) {
+      const page = document.createElement("a");
+      page.addEventListener("click", () => {
+        printLectCards(pagescount);
+      });
+      page.innerText = pagescount;
+      pagesElement.append(page);
+    }
+  }
+
+  function outerNumBtnDisabler() {
+    currentLecturersPage == 1 ? (lecturersBTNPrevious.disabled = true) : (lecturersBTNPrevious.disabled = false);
+
+    currentLecturersPage == maxLecturersPage ? (lecturersBTNNext.disabled = true) : (lecturersBTNNext.disabled = false);
+  }
+
+  // TAGS - HORIZONTAL SCROLL
+
+  const container = document.getElementsByClassName("tags-container");
+
+  for (let i = 0; i < container.length; i++) {
+    container[i].addEventListener("wheel", function (e) {
+      container[i].scrollLeft += e.deltaY > 0 ? 100 : -100;
+      e.preventDefault();
     });
-}
+  }
 
-// TAGS - HORIZONTAL SCROLL
+  const lecturersBTNPrevious = document.getElementById("previous");
+  const lecturersBTNNext = document.getElementById("next");
+  const pagesElement = document.getElementById("pages");
 
-const container = document.getElementsByClassName("tags-container");
-
-// create loop thru all html elements in tags-container
-for (let i = 0; i < container.length; i++) {
-  container[i].addEventListener("wheel", function (e) {
-    container[i].scrollLeft += e.deltaY > 0 ? 100 : -100;
-    e.preventDefault();
+  lecturersBTNPrevious.addEventListener("click", () => {
+    currentLecturersPage--;
+    outerNumBtnDisabler();
+    printLectCards(currentLecturersPage);
   });
+
+  lecturersBTNNext.addEventListener("click", () => {
+    currentLecturersPage++;
+    outerNumBtnDisabler();
+    printLectCards(currentLecturersPage);
+  });
+
+  outerNumBtnDisabler();
+  lectCardsPaging(maxLecturersPage);
+  printLectCards(currentLecturersPage);
 }
 
-// LECTURERS - CONTROLS
-
-let currentLecturersPage = 1;
-let maxLecturersPage = 2;
-
-const lecturersBTNPrevious = document.getElementById("previous");
-const lecturersBTNNext = document.getElementById("next");
-const pagesElement = document.getElementById("pages");
-
-lecturersBTNPrevious.addEventListener("click", () => {
-  currentLecturersPage--;
-  buttonDisabler();
-  lecturersPrint(currentLecturersPage);
-});
-
-lecturersBTNNext.addEventListener("click", () => {
-  currentLecturersPage++;
-  buttonDisabler();
-  lecturersPrint(currentLecturersPage);
-});
+lecturerCards();
 
 // PREDELAT PAGES NA ARRAY ABYCH JE MOHL ZVIRAZNIT A PREDELAT NACITANI LEKTORU PROTOZE TO SKACE A JE TO DOCELA SLOW, VYMYSLET NEJAK PRELOAD ABY TO BYLO RYCHLEJSI
-
-function pagesPrinter(pages) {
-  for (let pagescount = 1; pagescount <= pages; pagescount++) {
-    const page = document.createElement("a");
-    page.addEventListener("click", () => {
-      lecturersPrint(pagescount);
-    });
-    page.innerText = pagescount;
-    pagesElement.append(page);
-  }
-}
-
-function buttonDisabler() {
-  currentLecturersPage == 1 ? (lecturersBTNPrevious.disabled = true) : (lecturersBTNPrevious.disabled = false);
-
-  currentLecturersPage == maxLecturersPage ? (lecturersBTNNext.disabled = true) : (lecturersBTNNext.disabled = false);
-}
-
-// CALLING ALL FUNCTIONS
-
-buttonDisabler();
-pagesPrinter(maxLecturersPage);
-lecturersPrint(currentLecturersPage);
