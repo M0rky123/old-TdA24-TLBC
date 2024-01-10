@@ -101,7 +101,7 @@ h3::after {
   align-items: center;
   gap: 2rem;
   height: 30rem;
-  background: linear-gradient(#3339, #3339), url("../img/lecturer.jpg");
+  background: linear-gradient(#3339, #3339), url("../img/lecturer.webp");
   background-position: 0 -3rem;
   background-size: cover;
 }
