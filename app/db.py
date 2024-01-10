@@ -149,34 +149,43 @@ def select_kantor(uuid):
         else: 
             abort(404)
 
-def update_kantor(uuid, data):
+def update_kantor(uuid, kantor_data):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
-        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
+        # Fetch existing data to update selectively
+        cursor.execute("SELECT * FROM kantori WHERE uuid=?", (str(uuid),))
+        existing_data = cursor.fetchone()
 
-        cursor.execute("SELECT COUNT(*) FROM kantori WHERE uuid = ?", (uuid,))
-        lector_exists = cursor.fetchone()
+        if existing_data:
+            # Create a dictionary to store updated values
+            updated_values = {}
 
-        if lector_exists:
-            for key in data.keys():
-                if data[key] is None:
-                    data[key] = ""
-            cursor.execute("DELETE FROM kantori WHERE uuid = ?", (uuid,))
-            cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (data["title_before"], data["first_name"], data["middle_name"], data["last_name"], data["picture_url"], data["title_after"], data["price_per_hour"], data["location"], data["claim"], data["bio"], str(data["contact"]["emails"]), str(data["contact"]["telephone_numbers"]), str(uuid), str(data["tags"])))
-            data["uuid"] = uuid
+            # Iterate through the keys in the JSON data
+            for key in kantor_data.keys():
+                # Check if the key exists in the database table
+                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
+                    updated_values[key] = kantor_data[key]
+
+            # Generate SQL UPDATE query
+            update_query = "UPDATE kantori SET "
+            update_values = []
+
+            for key, value in updated_values.items():
+                update_query += f"{key}=?, "
+                update_values.append(value)
+
+            update_query = update_query.rstrip(', ')  # Remove the trailing comma
+            update_query += " WHERE uuid=?"
+
+            # Add the UUID to the update values
+            update_values.append(str(uuid))
+
+            # Execute the update query
+            cursor.execute(update_query, tuple(update_values))
+
             connection.commit()
-            new_tags = []
-            tags = data["tags"]
-            for tag in tags:
-                if isinstance(tag, dict):
-                    tag_name = tag.pop("name", None)
-                    if tag_name:
-                        new_tag = create_tag_if_not_exist(tag_name)
-                        new_tags.append(new_tag)
-            tags = new_tags
-            data['tags'] = tags
-
+            data = select_kantor(uuid)
             return data, 200
         else:
             return {"status": "not found"}, 404
@@ -200,10 +209,10 @@ def create_tag_if_not_exist(tag_name):
             data = add_tag_to_db(tag_name)
             return data
    
-def add_kantor(title_before: None, name, middle_name: None, last_name, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
+def add_kantor(title_before: None, first_name, name, middle_name: None, last_name, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
+        cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
         
     connection.commit()
 
