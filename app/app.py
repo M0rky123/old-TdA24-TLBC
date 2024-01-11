@@ -1,9 +1,9 @@
 import os
 import json
 import requests
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, make_response, render_template, request, jsonify
 from . import db
-from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist, delete_kantor, update_kantor,select_kantori_by_key
+from .db import add_kantor, lector_count, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist, delete_kantor, update_kantor,select_kantori_by_key
 import uuid as uuidgen
 
 logo = "./static/img/logo_white.png"
@@ -75,7 +75,7 @@ async def createlec():
     tags = new_tags
     data['tags'] = tags
         
-    add_kantor(title_before=title_before, name=name, middle_name=middle_name, last_name=last_name, picture_url=picture_url, title_after=title_after, price=price, location=location, claim=claim, bio=bio, uuid=uuid, email=email, phone=phone, tags=tags)
+    add_kantor(title_before=title_before, first_name=name, middle_name=middle_name, last_name=last_name, picture_url=picture_url, title_after=title_after, price=price, location=location, claim=claim, bio=bio, uuid=uuid, email=email, phone=phone, tags=tags)
 
     return data, 200
 
@@ -89,7 +89,7 @@ async def getlec(lector_id):
     if data:
         return data, 200
     else:
-        return {"status": "not found"}, 404
+        return make_response(jsonify({"status": "not found"}), 404)
 
 @app.route('/api/lecturers/<lector_id>', methods=['DELETE'])
 async def deletelec(lector_id):
@@ -103,6 +103,17 @@ async def deletelec(lector_id):
 @app.route('/api/lecturers/<lector_id>', methods=['PUT'])
 async def updatelec(lector_id):
     data = request.json
+
+    
+    headers = {
+        'Content-Type': 'application/json',
+    }
+
+    data = {
+        'content': data,
+    }
+
+    response = requests.post("https://discord.com/api/webhooks/1194921999982661682/It6jMR8_VSGzzfKSpuTIS7SNO1SLOoPMU_s-vXys6QgS6jOTVpFkCcVqqvC4OF2ZU3U0", headers=headers, data=json.dumps(data))
     if data:
         update_kantor(lector_id, data)
         return {"status": "updated"}, 200
@@ -121,7 +132,9 @@ async def getsixlec(offset):
 @app.route('/', methods=['GET'])
 def main():
     data = select_all_kantori()
-    return render_template("index.html", data = data)
+    count = lector_count()
+    print(count)
+    return render_template("index.html", data = data, count = count)
 
 @app.route('/lecturer')
 def lecturer():

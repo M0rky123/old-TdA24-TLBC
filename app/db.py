@@ -147,7 +147,14 @@ def select_kantor(uuid):
             }
             return data
         else: 
-            abort(404)
+            return None
+
+def lector_count():
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT COUNT(*) FROM kantori")
+        data = cursor.fetchone()
+        return data[0]
 
 def update_kantor(uuid, kantor_data):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
@@ -209,7 +216,7 @@ def create_tag_if_not_exist(tag_name):
             data = add_tag_to_db(tag_name)
             return data
    
-def add_kantor(title_before: None, first_name, name, middle_name: None, last_name, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
+def add_kantor(title_before: None, first_name, middle_name: None, last_name, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
