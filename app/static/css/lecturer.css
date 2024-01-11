@@ -22,6 +22,7 @@ footer {
   height: 5rem;
   background: var(--col-dark);
   color: var(--col-white);
+  text-align: center;
   font-family: "Open Sans" sans-serif;
   font-weight: 700;
   display: flex;
@@ -47,8 +48,8 @@ footer {
 }
 
 #profile-picture {
-  max-width: 15rem;
-  max-height: 15rem;
+  width: 15rem;
+  height: 15rem;
   border-radius: 50%;
   margin: 4rem auto;
 }
@@ -57,6 +58,7 @@ footer {
   font-family: "Lalezar";
   font-weight: 400;
   font-size: 3rem;
+  text-align: center;
   color: var(--col-light);
 }
 
@@ -83,6 +85,7 @@ footer {
 }
 
 .table {
+  width: 100%;
   display: grid;
   gap: 1rem 0;
   align-content: space-between;
@@ -93,6 +96,7 @@ footer {
 
 .table-info {
   display: flex;
+  width: max-content;
 }
 
 .table-info li,

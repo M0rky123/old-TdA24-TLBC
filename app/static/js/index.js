@@ -1,7 +1,9 @@
 // LECTURERS - PRINT INTO html
 
 let currentLecturersPage = 1;
-let maxLecturersPage = 2;
+let maxLecturersPage = Math.ceil(lecturerCount / 6);
+
+console.log(maxLecturersPage, lectCount);
 
 function printLectCards(page) {
   let cards = document.getElementById("cards");
@@ -98,7 +100,7 @@ lecturersBTNPrevious.addEventListener("click", () => {
   lecturersBTNNext.disabled = true;
   setTimeout(() => {
     lecturersBTNNext.disabled = false;
-  }, 300);
+  }, 200);
 });
 
 lecturersBTNNext.addEventListener("click", () => {
@@ -109,13 +111,9 @@ lecturersBTNNext.addEventListener("click", () => {
   lecturersBTNPrevious.disabled = true;
   setTimeout(() => {
     lecturersBTNPrevious.disabled = false;
-  }, 300);
+  }, 200);
 });
 
 outerNumBtnDisabler();
 lectCardsPaging(maxLecturersPage);
 printLectCards(currentLecturersPage);
-
-console.log("cau");
-
-// PREDELAT PAGES NA ARRAY ABYCH JE MOHL ZVIRAZNIT A PREDELAT NACITANI LEKTORU PROTOZE TO SKACE A JE TO DOCELA SLOW, VYMYSLET NEJAK PRELOAD ABY TO BYLO RYCHLEJSI

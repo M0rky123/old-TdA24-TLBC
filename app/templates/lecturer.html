@@ -25,21 +25,21 @@
       <h2>{{ lecturer.claim }}</h2>
       <hr>
     </div>
-    <div class="info">
-      <div class="table">
-        <div class="table-info location">
+    <div class="info" id="info">
+      <div class="table" id="table">
+        <div class="table-info" id="location">
           <span class="icon">
             <i class="fa-solid fa-location-dot"></i>
           </span>
           <span>{{ lecturer.location }}</span>
         </div>
-        <div class="table-info price">
+        <div class="table-info" id="price">
           <span class="icon">
             <i class="fa-solid fa-coins"></i>
           </span>
           <span>{{ lecturer.price_per_hour }} Kč / hod.</span>
         </div>
-        <div class="table-info tel">
+        <div class="table-info" id="tel">
           <span class="icon">
             <i class="fa-solid fa-square-phone"></i>
           </span>
@@ -49,7 +49,7 @@
             {% endfor %}
           </ul>
         </div>
-        <div class="table-info mail">
+        <div class="table-info" id="mail">
           <span class="icon">
             <i class="fa-solid fa-envelope"></i>
           </span>
