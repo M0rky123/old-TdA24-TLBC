@@ -4,8 +4,6 @@ from flask.cli import with_appcontext
 import sqlite3
 import uuid as uuidgen
 
-
-
 CREATE_TAG_TABLE = """
 CREATE TABLE IF NOT EXISTS tags (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -156,12 +154,6 @@ def lector_count():
         data = cursor.fetchone()
         return data[0]
 
-import sqlite3
-from flask import current_app
-
-import sqlite3
-from flask import current_app
-
 def update_kantor(uuid, kantor_data):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
@@ -179,9 +171,15 @@ def update_kantor(uuid, kantor_data):
                 # Check if the key exists in the database table
                 if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
                     if key == 'tags':
-                        # Extract tag names from nested structure
-                        tags = str(kantor_data["tags"])
-                        updated_values['tags'] = tags
+                        new_tags = []
+                        for tag in kantor_data["tags"]:
+                            if isinstance(tag, dict):
+                                tag_name = tag.pop("name", None)
+                                if tag_name:
+                                    new_tag = create_tag_if_not_exist(tag_name)
+                                    new_tags.append(new_tag)
+                        tags = new_tags
+                        updated_values['tags'] = str(tags)
                     elif key == 'contact':
                         # Extract phone and email information from nested structure
                         if 'telephone_numbers' in kantor_data[key]:
