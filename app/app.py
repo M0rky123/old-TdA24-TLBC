@@ -55,10 +55,10 @@ async def getlec(lector_id):
 
 @app.route('/api/lecturers/<lector_id>', methods=['DELETE'])
 async def deletelec(lector_id):
-    data = get(lector_id)
-    if data:
+    _, status = get(lector_id)
+    if status == 200:
         delete(lector_id)
-        return {"status": "deleted"}, 200
+        return {"status": "deleted"}, status
     else:
         return {"status": "not found"}, 404
 

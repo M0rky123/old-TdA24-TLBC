@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "http://127.0.0.1:5000/api/lecturers"
+url = "http://127.0.0.1:5000/api/lecturers/999a8b5f-8dda-4ba8-8a15-21df6110f573"
 
 # Your JSON data for POST request
 post_data = {
@@ -36,7 +36,7 @@ post_data = {
 json_post_data = json.dumps(post_data)
 
 # Make the POST request
-response_post = requests.post(url, data=json_post_data, headers={"Content-Type": "application/json"})
+response_post = requests.put(url, data=json_post_data, headers={"Content-Type": "application/json"})
 print("POST Response:")
 print(response_post.status_code)
 print(response_post.text)

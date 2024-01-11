@@ -192,8 +192,8 @@ def update(uuid, kantor_data):
 
         if existing_data:
             updated_values = {}
-            if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
-                for key in kantor_data.keys():                
+            for key in kantor_data.keys():                
+                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
                     if key == 'tags':
                         new_tags = []
                         for tag in kantor_data["tags"]:
@@ -233,7 +233,7 @@ def update(uuid, kantor_data):
 
             connection.commit()
             data = get(uuid)
-            return data, 200
+            return jsonify(data), 200
         else:
             return {"status": "not found"}, 404
 
