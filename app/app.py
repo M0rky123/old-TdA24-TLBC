@@ -103,22 +103,12 @@ async def deletelec(lector_id):
 @app.route('/api/lecturers/<lector_id>', methods=['PUT'])
 async def updatelec(lector_id):
     data = request.json
-
-    
-    headers = {
-        'Content-Type': 'application/json',
-    }
-
-    data = {
-        'content': data,
-    }
-
-    response = requests.post("https://discord.com/api/webhooks/1194921999982661682/It6jMR8_VSGzzfKSpuTIS7SNO1SLOoPMU_s-vXys6QgS6jOTVpFkCcVqqvC4OF2ZU3U0", headers=headers, data=json.dumps(data))
-    if data:
-        update_kantor(lector_id, data)
-        return {"status": "updated"}, 200
+    lector = select_kantor(lector_id)
+    if lector:
+        data, status = update_kantor(lector_id, data)
+        return {"status": "updated"}, status
     else:
-        return {"status": "not found"}, 404
+        return {"message": "User not found"}, 404
     
 @app.route('/api/lecturers/main/<offset>', methods=['GET'])
 async def getsixlec(offset):
