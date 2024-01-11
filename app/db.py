@@ -248,9 +248,9 @@ def add_tag(tag_name):
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM tags WHERE tag_name = ?", (tag_name,))
 
-        data = cursor.fetchone()
-        if data:
-            data = {"name": data[1], "uuid": data[2]}
+        tags = cursor.fetchone()
+        if tags:
+            data = {"name": tags[1], "uuid": tags[2]}
             return data
         else:
             uuid = str(uuidgen.uuid4())
@@ -284,15 +284,19 @@ def add_kantor(data):
         if isinstance(tag, dict):
             tag_name = tag.pop("name", None)
             if tag_name:
+                print(tag_name)
                 new_tag = add_tag(tag_name)
+                print(new_tag)
                 new_tags.append(new_tag)
     tags = new_tags
+    data['tags'] = tags
 
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
         
     connection.commit()
+    return data, 200
 
 
 

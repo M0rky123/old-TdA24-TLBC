@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "http://127.0.0.1:5000/api/lecturers/d0ca045e-f8de-4a17-9231-d8a60e272f00"
+url = "http://127.0.0.1:5000/api/lecturers"
 
 # Your JSON data for POST request
 post_data = {
@@ -14,7 +14,7 @@ post_data = {
     "claim": "Passionate researcher / Community leader / Tech enthusiast",
     "bio": "I thrive on exploring new ideas and pushing the boundaries of technology. Whether it's conducting research in cutting-edge fields, leading community initiatives, or diving into the world of tech, I am always eager to contribute and learn. My journey has involved everything from developing innovative software solutions to collaborating on open-source projects. Currently pursuing a PhD in Computer Science at Tech University.",
     "tags": [
-        {"name": "Research"},
+        {"name": "Test 123"},
         {"name": "Community Engagement"},
         {"name": "Technology Enthusiast"},
         {"name": "Innovation"},
@@ -36,7 +36,7 @@ post_data = {
 json_post_data = json.dumps(post_data)
 
 # Make the POST request
-#response_post = requests.post(url, data=json_post_data, headers={"Content-Type": "application/json"})
+response_post = requests.post(url, data=json_post_data, headers={"Content-Type": "application/json"})
 print("POST Response:")
 print(response_post.status_code)
 print(response_post.text)

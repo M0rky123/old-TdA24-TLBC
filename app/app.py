@@ -39,9 +39,9 @@ async def createlec():
     if not validate_required_fields(data):
         return jsonify({"error": "Missing required fields"}), 400
     
-    add_kantor(data)
+    data, status = add_kantor(data)
 
-    return data, 200
+    return data, status
 
 @app.route('/api/lecturers', methods=['GET'] )
 async def getalllec():
