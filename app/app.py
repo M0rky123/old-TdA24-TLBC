@@ -49,11 +49,9 @@ async def getalllec():
 
 @app.route('/api/lecturers/<lector_id>', methods=['GET'])
 async def getlec(lector_id):
-    data = get(lector_id)
-    if data:
-        return data, 200
-    else:
-        return make_response(jsonify({"status": "not found"}), 404)
+    data, status = get(lector_id)
+    return data, status
+
 
 @app.route('/api/lecturers/<lector_id>', methods=['DELETE'])
 async def deletelec(lector_id):
@@ -65,14 +63,13 @@ async def deletelec(lector_id):
         return {"status": "not found"}, 404
 
 @app.route('/api/lecturers/<lector_id>', methods=['PUT'])
-async def updatelec(lector_id):
-    data = request.json
-    message, status = get(lector_id)
+def updatelec(lector_id):
+    data, status = get(lector_id)
     if status == 200:
-        data, status = update(lector_id, data)
-        return data, status
+        updated_data, status = update(lector_id, request.json)
+        return updated_data, status
     else:
-        return message, status
+        return jsonify(data), status
     
 @app.route('/api/lecturers/main/<offset>', methods=['GET'])
 async def getsixlec(offset):
@@ -96,8 +93,8 @@ def lecturer():
 
 @app.route('/lecturer/<lector_id>', methods=['GET'])
 def showlec(lector_id):
-    data = get(lector_id)
-    if data: 
+    data, status = get(lector_id)
+    if status == 200: 
         return render_template("lecturer.html", lecturer=data)
     else: 
         return render_template("404.html", lecturer=lector_id)

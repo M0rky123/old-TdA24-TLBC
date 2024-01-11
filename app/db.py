@@ -1,5 +1,5 @@
 import click
-from flask import current_app, g
+from flask import current_app, g, jsonify
 from flask.cli import with_appcontext
 import sqlite3
 import uuid as uuidgen
