@@ -37,24 +37,6 @@ json_post_data = json.dumps(post_data)
 
 # Make the POST request
 #response_post = requests.post(url, data=json_post_data, headers={"Content-Type": "application/json"})
-#print("POST Response:")
-#print(response_post.status_code)
-#print(response_post.text)
-
-url = "http://127.0.0.1:5000//api/lecturers/2c556c9b-e00d-4asdasdd-a8b075024eb0"
-
-response = requests.get(url)
-print("GET Response:")
-print(response.status_code)
-print(response.text)
-
-
-headers = {
-    'Content-Type': 'application/json',
-}
-
-data = {
-    'content': "Test ",
-}
-
-response = requests.post("https://discord.com/api/webhooks/1194921999982661682/It6jMR8_VSGzzfKSpuTIS7SNO1SLOoPMU_s-vXys6QgS6jOTVpFkCcVqqvC4OF2ZU3U0", headers=headers, data=json.dumps(data))
+print("POST Response:")
+print(response_post.status_code)
+print(response_post.text)
