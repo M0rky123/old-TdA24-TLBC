@@ -75,7 +75,7 @@ async def createlec():
     tags = new_tags
     data['tags'] = tags
         
-    add_kantor(title_before=title_before, name=name, middle_name=middle_name, last_name=last_name, picture_url=picture_url, title_after=title_after, price=price, location=location, claim=claim, bio=bio, uuid=uuid, email=email, phone=phone, tags=tags)
+    add_kantor(title_before=title_before, first_name=name, middle_name=middle_name, last_name=last_name, picture_url=picture_url, title_after=title_after, price=price, location=location, claim=claim, bio=bio, uuid=uuid, email=email, phone=phone, tags=tags)
 
     return data, 200
 
