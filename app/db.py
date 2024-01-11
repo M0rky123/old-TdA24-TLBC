@@ -149,6 +149,13 @@ def select_kantor(uuid):
         else: 
             return None
 
+def lector_count():
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT COUNT(*) FROM kantori")
+        data = cursor.fetchone()
+        return data[0]
+
 def update_kantor(uuid, kantor_data):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()

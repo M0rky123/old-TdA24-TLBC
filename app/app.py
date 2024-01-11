@@ -3,7 +3,7 @@ import json
 import requests
 from flask import Flask, make_response, render_template, request, jsonify
 from . import db
-from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist, delete_kantor, update_kantor,select_kantori_by_key
+from .db import add_kantor, lector_count, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist, delete_kantor, update_kantor,select_kantori_by_key
 import uuid as uuidgen
 
 logo = "./static/img/logo_white.png"
@@ -121,7 +121,9 @@ async def getsixlec(offset):
 @app.route('/', methods=['GET'])
 def main():
     data = select_all_kantori()
-    return render_template("index.html", data = data)
+    count = lector_count()
+    print(count)
+    return render_template("index.html", data = data, count = count)
 
 @app.route('/lecturer')
 def lecturer():
