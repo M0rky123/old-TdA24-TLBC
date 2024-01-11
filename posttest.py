@@ -46,3 +46,14 @@ response = requests.get(url)
 print("GET Response:")
 print(response.status_code)
 print(response.text)
+
+
+headers = {
+    'Content-Type': 'application/json',
+}
+
+data = {
+    'content': "Test ",
+}
+
+response = requests.post("https://discord.com/api/webhooks/1194921999982661682/It6jMR8_VSGzzfKSpuTIS7SNO1SLOoPMU_s-vXys6QgS6jOTVpFkCcVqqvC4OF2ZU3U0", headers=headers, data=json.dumps(data))
