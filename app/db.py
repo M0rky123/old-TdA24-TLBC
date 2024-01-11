@@ -4,8 +4,6 @@ from flask.cli import with_appcontext
 import sqlite3
 import uuid as uuidgen
 
-
-
 CREATE_TAG_TABLE = """
 CREATE TABLE IF NOT EXISTS tags (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,6 +32,8 @@ CREATE TABLE IF NOT EXISTS kantori (
 """
 
 INIT_DB_STATEMENTS = [CREATE_TAG_TABLE, CREATE_KANTORI_TABLE]
+
+# TODO: Refactor the functions, make function names more continual, delete useless comments, add comments to the code that make sense, don't fuck up what work
 
 def get_db():
     if 'db' not in g:
@@ -171,8 +171,29 @@ def update_kantor(uuid, kantor_data):
             # Iterate through the keys in the JSON data
             for key in kantor_data.keys():
                 # Check if the key exists in the database table
-                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
-                    updated_values[key] = kantor_data[key]
+                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
+                    if key == 'tags':
+                        new_tags = []
+                        for tag in kantor_data["tags"]:
+                            if isinstance(tag, dict):
+                                tag_name = tag.pop("name", None)
+                                if tag_name:
+                                    new_tag = create_tag_if_not_exist(tag_name)
+                                    new_tags.append(new_tag)
+                        tags = new_tags
+                        updated_values['tags'] = str(tags)
+                    elif key == 'contact':
+                        # Extract phone and email information from nested structure
+                        if 'telephone_numbers' in kantor_data[key]:
+                            updated_values['phone'] = ', '.join(kantor_data[key]['telephone_numbers'])
+                        if 'emails' in kantor_data[key]:
+                            updated_values['email'] = ', '.join(kantor_data[key]['emails'])
+                    elif key == 'price_per_hour':
+                        # Handle the case where the key is 'price_per_hour' in kantor_data
+                        # but in the database it's 'price'
+                        updated_values['price'] = kantor_data[key]
+                    else:
+                        updated_values[key] = kantor_data[key]
 
             # Generate SQL UPDATE query
             update_query = "UPDATE kantori SET "
@@ -196,6 +217,8 @@ def update_kantor(uuid, kantor_data):
             return data, 200
         else:
             return {"status": "not found"}, 404
+
+
 
 def delete_kantor(uuid):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
