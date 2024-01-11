@@ -14,14 +14,7 @@
 </head>
 <body>
   <header>
-    <div class="container">
-      <a id="logo" href="#"></a>
-      <nav>
-        <a href="#about-us">o nás</a>
-        <a href="#lecturers">kantoři</a>
-        <a href="#contact">kontakt</a>
-      </nav>
-    </div>
+    <a id="logo" href="#"></a>
   </header>
   <main>
     <div class="hero">
@@ -30,6 +23,7 @@
     </div>
     <div class="about-us" id="about-us">
       <h3>o nás</h3>
+      <hr>
       <div class="paragraphs">
         <p>Teacher digital Agency je mladá společnost zaměřená na vyhledávání
           špičkových odborníků z řad učitelů, lektorů a tutorů.</p>
@@ -39,7 +33,10 @@
       </div>
     </div>
     <div class="lecturers" id="lecturers">
-      <h3>kantoři</h3>
+      <div>
+        <h3>kantoři</h3>
+        <hr>
+      </div>
       <div class="cards" id="cards"></div>
       <div class="controls">
         <button id="previous">
@@ -61,6 +58,7 @@
     </div>
     <div class="contact" id="contact">
       <h3>kontakt</h3>
+      <hr>
       <div>
         <div>
           <span class="icon">
@@ -83,7 +81,7 @@
 
   <script src="https://kit.fontawesome.com/7ba72c0f9b.js" crossorigin="anonymous"></script>
   <script>
-    const lecturerCount = 10;
+    const lecturerCount = "{{count}}";
   </script>
   <script src="../static/js/index.js"></script>
 </body>

@@ -3,9 +3,8 @@
 let currentLecturersPage = 1;
 let maxLecturersPage = Math.ceil(lecturerCount / 6);
 
-console.log(maxLecturersPage, lectCount);
-
 function printLectCards(page) {
+  buttonsDisabler();
   let cards = document.getElementById("cards");
   let lecturers = document.createDocumentFragment();
 
@@ -28,9 +27,9 @@ function printLectCards(page) {
 
           element.innerHTML = `<div class="lecturer"><img src="${
             json[i].picture_url ? json[i].picture_url : "https://media1.tenor.com/m/QA6mPKs100UAAAAC/caught-in.gif"
-          }" alt="LECTURER PROFILE PICTURE" width="80px" height="80px"><div class="info"><h4>${
+          }" alt="LECTURER PROFILE PICTURE" width="80px" height="80px"><div class="info"><div><h4>${
             json[i].title_before + " " + json[i].first_name + " " + json[i].middle_name + " " + json[i].last_name + " " + json[i].title_after
-          }</h4><p>${json[i].claim}</p><div class="info-icons"><div class="location"><span class="icon"><i class="fa-solid fa-location-dot"></i>${
+          }</h4><p>${json[i].claim}</p></div><div class="info-icons"><div class="location"><span class="icon"><i class="fa-solid fa-location-dot"></i>${
             json[i].location
           }</span></div><div class="price"><span class="icon"><i class="fa-solid fa-coins"></i>${
             json[i].price_per_hour
@@ -50,8 +49,8 @@ function lectCardsPaging(pages) {
   const container = document.getElementById("pages");
 
   for (let pagescount = 1; pagescount <= pages; pagescount++) {
-    const page = document.createElement("a");
-    page.setAttribute("href", "#cards");
+    const page = document.createElement("button");
+    page.setAttribute("class", "page");
     page.addEventListener("click", () => {
       printLectCards(pagescount);
       activePage(currentLecturersPage, pagescount);
@@ -79,13 +78,14 @@ function outerNumBtnDisabler() {
 
 // TAGS - HORIZONTAL SCROLL
 
-const container = document.getElementsByClassName("tags-container");
-
-for (let i = 0; i < container.length; i++) {
-  container[i].addEventListener("wheel", function (e) {
-    container[i].scrollLeft += e.deltaY > 0 ? 100 : -100;
-    e.preventDefault();
-  });
+// write me a function to horizontal scroll
+function horizontalScroll(container) {
+  for (let i = 0; i < container.length; i++) {
+    container[i].addEventListener("wheel", function (e) {
+      container[i].scrollLeft += e.deltaY > 0 ? 100 : -100;
+      e.preventDefault();
+    });
+  }
 }
 
 const lecturersBTNPrevious = document.getElementById("previous");
@@ -95,25 +95,28 @@ const pagesElement = document.getElementById("pages");
 lecturersBTNPrevious.addEventListener("click", () => {
   activePage(currentLecturersPage, currentLecturersPage - 1);
   currentLecturersPage--;
-  outerNumBtnDisabler();
   printLectCards(currentLecturersPage);
-  lecturersBTNNext.disabled = true;
-  setTimeout(() => {
-    lecturersBTNNext.disabled = false;
-  }, 200);
+  buttonsDisabler();
 });
 
 lecturersBTNNext.addEventListener("click", () => {
   activePage(currentLecturersPage, currentLecturersPage + 1);
   currentLecturersPage++;
-  outerNumBtnDisabler();
   printLectCards(currentLecturersPage);
-  lecturersBTNPrevious.disabled = true;
-  setTimeout(() => {
-    lecturersBTNPrevious.disabled = false;
-  }, 200);
+  buttonsDisabler();
 });
 
+function buttonsDisabler() {
+  lecturersBTNNext.disabled = true;
+  lecturersBTNPrevious.disabled = true;
+  setTimeout(() => {
+    lecturersBTNNext.disabled = false;
+    lecturersBTNPrevious.disabled = false;
+    outerNumBtnDisabler();
+  }, 200);
+}
+
+horizontalScroll(document.getElementsByClassName("tags-container"));
 outerNumBtnDisabler();
 lectCardsPaging(maxLecturersPage);
 printLectCards(currentLecturersPage);

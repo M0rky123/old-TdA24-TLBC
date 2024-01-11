@@ -1,0 +1,97 @@
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@media only screen and (max-width: 1008px) {
+  .container {
+    padding-inline: 2rem;
+  }
+
+  #about-us {
+    padding: 2rem;
+  }
+
+  #cards {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 1rem 2rem;
+    height: 73.5rem;
+    padding-inline: 2rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  html header,
+  html footer {
+    height: 4rem;
+  }
+
+  html #logo {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  html h3 {
+    font-size: 1.5rem;
+  }
+
+  html hr {
+    width: 12rem;
+    margin-bottom: 1rem;
+  }
+
+  html .hero {
+    height: 20rem;
+  }
+
+  html .hero h1 {
+    font-size: 2rem;
+  }
+
+  html .hero h2 {
+    font-size: 1.25rem;
+  }
+
+  html .about-us p {
+    font-size: 0.85rem;
+  }
+
+  html .lecturers {
+    gap: 1rem;
+  }
+
+  html .lecturer {
+    gap: 1rem;
+  }
+
+  html #cards {
+    height: 60rem;
+  }
+
+  html .card {
+    min-height: 9rem;
+  }
+
+  html img {
+    height: 4rem;
+    width: 4rem;
+  }
+
+  html .card h4 {
+    font-size: 1.125rem;
+  }
+
+  html .tags li {
+    font-size: 0.8rem;
+  }
+
+  html .contact {
+    padding: 2rem;
+  }
+
+  html .contact span {
+    font-size: 0.8rem;
+  }
+}
