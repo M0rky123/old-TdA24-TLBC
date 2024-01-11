@@ -156,6 +156,12 @@ def lector_count():
         data = cursor.fetchone()
         return data[0]
 
+import sqlite3
+from flask import current_app
+
+import sqlite3
+from flask import current_app
+
 def update_kantor(uuid, kantor_data):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
@@ -172,7 +178,18 @@ def update_kantor(uuid, kantor_data):
             for key in kantor_data.keys():
                 # Check if the key exists in the database table
                 if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
-                    updated_values[key] = kantor_data[key]
+                    if key == 'tags':
+                        # Extract tag names from nested structure
+                        tags = str(kantor_data["tags"])
+                        updated_values['tags'] = tags
+                    elif key == 'contact':
+                        # Extract phone and email information from nested structure
+                        if 'telephone_numbers' in kantor_data[key]:
+                            updated_values['phone'] = ', '.join(kantor_data[key]['telephone_numbers'])
+                        if 'emails' in kantor_data[key]:
+                            updated_values['email'] = ', '.join(kantor_data[key]['emails'])
+                    else:
+                        updated_values[key] = kantor_data[key]
 
             # Generate SQL UPDATE query
             update_query = "UPDATE kantori SET "
@@ -196,6 +213,8 @@ def update_kantor(uuid, kantor_data):
             return data, 200
         else:
             return {"status": "not found"}, 404
+
+
 
 def delete_kantor(uuid):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:

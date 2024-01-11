@@ -1,15 +1,14 @@
 import requests
 import json
 
-url = "http://127.0.0.1:5000/api/lecturers/2c556c9b-e00d-4asdasdd-a8b075024eb0"
+url = "http://127.0.0.1:5000/api/lecturers/d0ca045e-f8de-4a17-9231-d8a60e272f00"
 
 # Your JSON data for POST request
 post_data = {
     "title_before": "Dr.",
-    "first_name": "John",
-    "last_name": "Carson",
+    "first_name": "DEEZ",
+    "last_name": "Nuts",
     "picture_url": "https://fastly.picsum.photos/id/480/200/200.jpg?hmac=q_kzh_8Ih85_5t_jN3rcD3npeNBLA41oDGtQZVkmmYs",
-    "location": "Cityville",
     "claim": "Passionate researcher / Community leader / Tech enthusiast",
     "bio": "I thrive on exploring new ideas and pushing the boundaries of technology. Whether it's conducting research in cutting-edge fields, leading community initiatives, or diving into the world of tech, I am always eager to contribute and learn. My journey has involved everything from developing innovative software solutions to collaborating on open-source projects. Currently pursuing a PhD in Computer Science at Tech University.",
     "tags": [

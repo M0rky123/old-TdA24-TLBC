@@ -106,7 +106,7 @@ async def updatelec(lector_id):
     lector = select_kantor(lector_id)
     if lector:
         data, status = update_kantor(lector_id, data)
-        return {"status": "updated"}, status
+        return data, status
     else:
         return {"message": "User not found"}, 404
     
