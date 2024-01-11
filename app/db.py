@@ -193,7 +193,7 @@ def update(uuid, kantor_data):
         if existing_data:
             updated_values = {}
             for key in kantor_data.keys():                
-                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'contact']:
+                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'contact', 'tags']:
                     if key == 'tags':
                         new_tags = []
                         for tag in kantor_data["tags"]:
