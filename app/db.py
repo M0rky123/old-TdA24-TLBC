@@ -169,7 +169,7 @@ def update_kantor(uuid, kantor_data):
             # Iterate through the keys in the JSON data
             for key in kantor_data.keys():
                 # Check if the key exists in the database table
-                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
+                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
                     if key == 'tags':
                         new_tags = []
                         for tag in kantor_data["tags"]:
@@ -186,6 +186,10 @@ def update_kantor(uuid, kantor_data):
                             updated_values['phone'] = ', '.join(kantor_data[key]['telephone_numbers'])
                         if 'emails' in kantor_data[key]:
                             updated_values['email'] = ', '.join(kantor_data[key]['emails'])
+                    elif key == 'price_per_hour':
+                        # Handle the case where the key is 'price_per_hour' in kantor_data
+                        # but in the database it's 'price'
+                        updated_values['price'] = kantor_data[key]
                     else:
                         updated_values[key] = kantor_data[key]
 

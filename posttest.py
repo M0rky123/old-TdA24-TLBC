@@ -21,7 +21,7 @@ post_data = {
         {"name": "Artificial Intelligence"},
         {"name": "Data Science"},
     ],
-    "price_per_hour": 1500,
+    "price_per_hour": 100,
     "contact": {
         "telephone_numbers": ["+123 456 7890"],
         "emails": ["alex.smith@example.com", "contact@alexsmith.com"],
