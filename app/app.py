@@ -64,9 +64,10 @@ async def deletelec(lector_id):
 
 @app.route('/api/lecturers/<lector_id>', methods=['PUT'])
 def updatelec(lector_id):
+    request_data = request.json
     data, status = get(lector_id)
     if status == 200:
-        updated_data, status = update(lector_id, request.json)
+        updated_data, status = update(lector_id, request_data)
         return updated_data, status
     else:
         return jsonify(data), status
