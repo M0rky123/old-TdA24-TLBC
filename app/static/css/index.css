@@ -112,8 +112,8 @@ h3::after {
   gap: 2rem;
   height: 30rem;
   background: linear-gradient(#3339, #3339), url("../img/lecturer.webp");
-  background-position: 0 -3rem;
   background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .hero > * {
@@ -182,14 +182,20 @@ h3::after {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 1.5rem 2rem;
-  height: 35rem;
+  height: 36rem;
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: max-content;
+  min-height: 11rem;
   padding: 1rem;
   border-radius: 1rem;
   background: var(--col-light);
   overflow-x: hidden;
+  box-shadow: 5px 5px 20px #222;
 }
 
 .blank-card {
@@ -210,9 +216,13 @@ h3::after {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.125rem;
+  gap: 0.25rem;
   text-align: start;
-  padding: 0.5rem 0;
+  padding: 0.5rem 0 0;
+}
+
+.info p {
+  line-height: 0.9;
 }
 
 .info-icons {
@@ -255,7 +265,7 @@ h3::after {
 .tags li {
   padding: 0.25rem 0.5rem;
   border-radius: 20rem;
-  font-weight: 700;
+  font-weight: 600;
   background: var(--col-dark);
   color: var(--col-white);
   text-transform: capitalize;

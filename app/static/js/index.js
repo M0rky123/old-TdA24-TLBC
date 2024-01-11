@@ -3,8 +3,6 @@
 let currentLecturersPage = 1;
 let maxLecturersPage = Math.ceil(lecturerCount / 6);
 
-console.log(maxLecturersPage, lectCount);
-
 function printLectCards(page) {
   let cards = document.getElementById("cards");
   let lecturers = document.createDocumentFragment();
@@ -79,13 +77,14 @@ function outerNumBtnDisabler() {
 
 // TAGS - HORIZONTAL SCROLL
 
-const container = document.getElementsByClassName("tags-container");
-
-for (let i = 0; i < container.length; i++) {
-  container[i].addEventListener("wheel", function (e) {
-    container[i].scrollLeft += e.deltaY > 0 ? 100 : -100;
-    e.preventDefault();
-  });
+// write me a function to horizontal scroll
+function horizontalScroll(container) {
+  for (let i = 0; i < container.length; i++) {
+    container[i].addEventListener("wheel", function (e) {
+      container[i].scrollLeft += e.deltaY > 0 ? 100 : -100;
+      e.preventDefault();
+    });
+  }
 }
 
 const lecturersBTNPrevious = document.getElementById("previous");
@@ -95,25 +94,28 @@ const pagesElement = document.getElementById("pages");
 lecturersBTNPrevious.addEventListener("click", () => {
   activePage(currentLecturersPage, currentLecturersPage - 1);
   currentLecturersPage--;
-  outerNumBtnDisabler();
   printLectCards(currentLecturersPage);
-  lecturersBTNNext.disabled = true;
-  setTimeout(() => {
-    lecturersBTNNext.disabled = false;
-  }, 200);
+  buttonsDisabler();
 });
 
 lecturersBTNNext.addEventListener("click", () => {
   activePage(currentLecturersPage, currentLecturersPage + 1);
   currentLecturersPage++;
-  outerNumBtnDisabler();
   printLectCards(currentLecturersPage);
-  lecturersBTNPrevious.disabled = true;
-  setTimeout(() => {
-    lecturersBTNPrevious.disabled = false;
-  }, 200);
+  buttonsDisabler();
 });
 
+function buttonsDisabler() {
+  lecturersBTNNext.disabled = true;
+  lecturersBTNPrevious.disabled = true;
+  setTimeout(() => {
+    lecturersBTNNext.disabled = false;
+    lecturersBTNPrevious.disabled = false;
+    outerNumBtnDisabler();
+  }, 200);
+}
+
+horizontalScroll(document.getElementsByClassName("tags-container"));
 outerNumBtnDisabler();
 lectCardsPaging(maxLecturersPage);
 printLectCards(currentLecturersPage);
