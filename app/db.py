@@ -232,7 +232,7 @@ def update(uuid, kantor_data):
             cursor.execute(update_query, tuple(update_values))
 
             connection.commit()
-            data = get(uuid)
+            data, _= get(uuid)
             return jsonify(data), 200
         else:
             return {"status": "not found"}, 404
