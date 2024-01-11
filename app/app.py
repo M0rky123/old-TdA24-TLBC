@@ -1,7 +1,7 @@
 import os
 import json
 import requests
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, make_response, render_template, request, jsonify
 from . import db
 from .db import add_kantor, select_kantor, get_all_tags, add_tag_to_db, select_all_kantori, create_tag_if_not_exist, delete_kantor, update_kantor,select_kantori_by_key
 import uuid as uuidgen
@@ -89,7 +89,7 @@ async def getlec(lector_id):
     if data:
         return data, 200
     else:
-        return {"status": "not found"}, 404
+        return make_response(jsonify({"status": "not found"}), 404)
 
 @app.route('/api/lecturers/<lector_id>', methods=['DELETE'])
 async def deletelec(lector_id):

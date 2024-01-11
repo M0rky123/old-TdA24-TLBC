@@ -147,7 +147,7 @@ def select_kantor(uuid):
             }
             return data
         else: 
-            abort(404)
+            return None
 
 def update_kantor(uuid, kantor_data):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
