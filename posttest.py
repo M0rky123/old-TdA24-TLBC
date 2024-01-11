@@ -1,12 +1,13 @@
 import requests
 import json
 
-url = "http://127.0.0.1:5000/api/lecturers/999a8b5f-8dda-4ba8-8a15-21df6110f573"
+url = "http://127.0.0.1:5000/api/lecturers/0e588e2b-b479-43b5-b2d3-871f8f699066"
+#url = "http://f7b5d5a152c395f1.app.tourdeapp.cz/api/lecturers/ac6b9352-b0b7-45d8-993a-988f68602eeb"
 
 # Your JSON data for POST request
 post_data = {
-    "title_before": "Bc., Mgr., Ing.",
-    "first_name": "Vendelína",
+    "title_before": "TEST",
+    "first_name": "YOYOYO",
     "middle_name": "Kraťoučká",
     "last_name": "Červeňoučká",
     "picture_url": "https://fastly.picsum.photos/id/480/200/200.jpg?hmac=q_kzh_8Ih85_5t_jN3rcD3npeNBLA41oDGtQZVkmmYs",
@@ -25,7 +26,7 @@ post_data = {
     ],
     "price_per_hour": 100,
     "contact": {
-        "telephone_numbers": ["+123 456 789 012"],
+        "telephone_numbers": ["+123 456 789 012", "+420 233 444 555"],
         "emails": ["alex.smith@example.com", "contact@alexsmith.com"],
     }
 }
@@ -39,4 +40,5 @@ json_post_data = json.dumps(post_data)
 response_post = requests.put(url, data=json_post_data, headers={"Content-Type": "application/json"})
 print("POST Response:")
 print(response_post.status_code)
+print(type(response_post.text))
 print(response_post.text)

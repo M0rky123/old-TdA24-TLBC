@@ -193,7 +193,7 @@ def update(uuid, kantor_data):
         if existing_data:
             updated_values = {}
             for key in kantor_data.keys():                
-                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
+                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'contact']:
                     if key == 'tags':
                         new_tags = []
                         for tag in kantor_data["tags"]:
@@ -205,10 +205,11 @@ def update(uuid, kantor_data):
                         tags = new_tags
                         updated_values['tags'] = str(tags)
                     elif key == 'contact':
-                        if 'telephone_numbers' in kantor_data[key]:
-                            updated_values['phone'] = ', '.join(kantor_data[key]['telephone_numbers'])
-                        if 'emails' in kantor_data[key]:
-                            updated_values['email'] = ', '.join(kantor_data[key]['emails'])
+                        if kantor_data[key]['telephone_numbers']:
+                            print(f"TEST {kantor_data[key]['telephone_numbers']}")
+                            updated_values['phone'] = str(kantor_data[key]['telephone_numbers'])
+                        if kantor_data[key]['emails']:
+                            updated_values['email'] = str(kantor_data[key]['emails'])
                     elif key == 'price_per_hour':
                         updated_values['price'] = kantor_data[key]
                     else:
