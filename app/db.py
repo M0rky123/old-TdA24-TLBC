@@ -1,5 +1,5 @@
 import click
-from flask import Flask, current_app, g, abort
+from flask import current_app, g, jsonify
 from flask.cli import with_appcontext
 import sqlite3
 import uuid as uuidgen
@@ -35,6 +35,9 @@ INIT_DB_STATEMENTS = [CREATE_TAG_TABLE, CREATE_KANTORI_TABLE]
 
 # TODO: Refactor the functions, make function names more continual, delete useless comments, add comments to the code that make sense, don't fuck up what work
 
+
+# Setup functions
+
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(
@@ -68,13 +71,18 @@ def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
 
+# My magical functions, I've commited a lot of crimes when doing this. So please be kind when judging my backend (☞ ͡° ͜ʖ ͡°)☞
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
 
-def select_all_kantori():
+def get_all():
+    """
+    This function returns all saved Lecturers in our database packed in a JSON
+    """
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         connection.row_factory = dict_factory
         cursor = connection.cursor()
@@ -100,8 +108,11 @@ def select_all_kantori():
                     lector[key] = ""
         return data
 
-def select_kantori_by_key(parsed_key, limit=6):
-    offset = (int(parsed_key) - 1) * limit
+def get_page(page_number, limit=6):
+    """
+    This function returns a page of 6 (Can be changed with limit param)Lecturers in our database packed in a JSON
+    """
+    offset = (int(page_number) - 1) * limit
 
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         connection.row_factory = dict_factory
@@ -109,30 +120,36 @@ def select_kantori_by_key(parsed_key, limit=6):
         
         cursor.execute(f"SELECT * FROM kantori LIMIT {limit} OFFSET {offset}")
         data = cursor.fetchall()
-        lecturers = []
-        for lector in data:
-            lector.pop("id", None)
-            lector["uuid"] = lector.pop("uuid", None)
-            lector["last_name"] = lector.pop("last_name", None)
-            lector["picture_url"] = lector.pop("picture_url", None)
-            lector["location"] = lector.pop("location", None)
-            lector["claim"] = lector.pop("claim", None)
-            lector["bio"] = lector.pop("bio", None)
-            lector["tags"] = eval(lector.pop("tags", None))
-            lector["price_per_hour"] = lector.pop("price", None)
-            lector["contact"] = {
-                "telephone_numbers": eval(lector.pop("phone", [])),
-                "emails": eval(lector.pop("email", []))
-            }
+        if data:
+            lecturers = []
+            for lector in data:
+                lector.pop("id", None)
+                lector["uuid"] = lector.pop("uuid", None)
+                lector["last_name"] = lector.pop("last_name", None)
+                lector["picture_url"] = lector.pop("picture_url", None)
+                lector["location"] = lector.pop("location", None)
+                lector["claim"] = lector.pop("claim", None)
+                lector["bio"] = lector.pop("bio", None)
+                lector["tags"] = eval(lector.pop("tags", None))
+                lector["price_per_hour"] = lector.pop("price", None)
+                lector["contact"] = {
+                    "telephone_numbers": eval(lector.pop("phone", [])),
+                    "emails": eval(lector.pop("email", []))
+                }
 
-            for key in lector.keys():
-                if lector[key] is None:
-                    lector[key] = ""
-            lecturers.append(lector)
+                for key in lector.keys():
+                    if lector[key] is None:
+                        lector[key] = ""
+                lecturers.append(lector)
 
-        return lecturers
+            return lecturers, 200
+        else:
+            return {"message": "Page Empty"}, 204 
 
-def select_kantor(uuid):
+def get(uuid):
+    """
+    This returns a single lecturer from the database based of the uuid
+    """
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         connection.row_factory = dict_factory
         cursor = connection.cursor()
@@ -145,18 +162,27 @@ def select_kantor(uuid):
                 "telephone_numbers": eval(data.pop("phone", [])),
                 "emails": eval(data.pop("email", []))
             }
-            return data
+            return data, 200
         else: 
-            return None
+            return {'message': 'Not found'}, 404
 
-def lector_count():
+def get_count():
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT COUNT(*) FROM kantori")
         data = cursor.fetchone()
         return data[0]
 
-def update_kantor(uuid, kantor_data):
+def get_all_tags():
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM tags")
+        return cursor.fetchall()
+
+def update(uuid, kantor_data):
+    """
+    This function is for updating lecturer data. This took me so fucking long (╯'□')╯︵ ┻━┻
+    """
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
 
@@ -165,35 +191,32 @@ def update_kantor(uuid, kantor_data):
         existing_data = cursor.fetchone()
 
         if existing_data:
-            # Create a dictionary to store updated values
             updated_values = {}
-
-            # Iterate through the keys in the JSON data
-            for key in kantor_data.keys():
-                # Check if the key exists in the database table
-                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'email', 'phone', 'tags']:
-                    if key == 'tags':
-                        new_tags = []
-                        for tag in kantor_data["tags"]:
-                            if isinstance(tag, dict):
-                                tag_name = tag.pop("name", None)
-                                if tag_name:
-                                    new_tag = create_tag_if_not_exist(tag_name)
-                                    new_tags.append(new_tag)
-                        tags = new_tags
-                        updated_values['tags'] = str(tags)
-                    elif key == 'contact':
-                        # Extract phone and email information from nested structure
-                        if 'telephone_numbers' in kantor_data[key]:
-                            updated_values['phone'] = ', '.join(kantor_data[key]['telephone_numbers'])
-                        if 'emails' in kantor_data[key]:
-                            updated_values['email'] = ', '.join(kantor_data[key]['emails'])
-                    elif key == 'price_per_hour':
-                        # Handle the case where the key is 'price_per_hour' in kantor_data
-                        # but in the database it's 'price'
-                        updated_values['price'] = kantor_data[key]
+            for key in kantor_data.keys():                
+                if key in ['title_before', 'first_name', 'middle_name', 'last_name', 'picture_url', 'title_after', 'price_per_hour', 'location', 'claim', 'bio', 'contact', 'tags']:
+                    if kantor_data[key] is not None:
+                        if key == 'tags':
+                            new_tags = []
+                            for tag in kantor_data["tags"]:
+                                if isinstance(tag, dict):
+                                    tag_name = tag.pop("name", None)
+                                    if tag_name:
+                                        new_tag = add_tag(tag_name)
+                                        new_tags.append(new_tag)
+                            tags = new_tags
+                            updated_values['tags'] = str(tags)
+                        elif key == 'contact':
+                            if kantor_data[key]['telephone_numbers']:
+                                print(f"TEST {kantor_data[key]['telephone_numbers']}")
+                                updated_values['phone'] = str(kantor_data[key]['telephone_numbers'])
+                            if kantor_data[key]['emails']:
+                                updated_values['email'] = str(kantor_data[key]['emails'])
+                        elif key == 'price_per_hour':
+                            updated_values['price'] = kantor_data[key]
+                        else:
+                            updated_values[key] = kantor_data[key]
                     else:
-                        updated_values[key] = kantor_data[key]
+                        updated_values[key] = None  
 
             # Generate SQL UPDATE query
             update_query = "UPDATE kantori SET "
@@ -213,53 +236,75 @@ def update_kantor(uuid, kantor_data):
             cursor.execute(update_query, tuple(update_values))
 
             connection.commit()
-            data = select_kantor(uuid)
-            return data, 200
+            data, _= get(uuid)
+            return jsonify(data), 200
         else:
             return {"status": "not found"}, 404
 
-
-
-def delete_kantor(uuid):
+def delete(uuid):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("DELETE FROM kantori WHERE uuid = ?", (uuid,))
         connection.commit()
 
-def create_tag_if_not_exist(tag_name):
+def add_tag(tag_name):
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM tags WHERE tag_name = ?", (tag_name,))
 
-        data = cursor.fetchone()
-        if data:
-            data = {"name": data[1], "uuid": data[2]}
+        tags = cursor.fetchone()
+        if tags:
+            data = {"name": tags[1], "uuid": tags[2]}
             return data
         else:
-            data = add_tag_to_db(tag_name)
-            return data
-   
-def add_kantor(title_before: None, first_name, middle_name: None, last_name, picture_url: None, title_after: None, price: None, location: None, claim: None, bio: None, uuid = str, email = list, phone = list, tags: None = list):
+            uuid = str(uuidgen.uuid4())
+            with sqlite3.connect(current_app.config['DATABASE']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("INSERT INTO tags (tag_name, tag_id) VALUES (?, ?)", (tag_name, uuid))
+
+            connection.commit()
+            return {"name": tag_name, "uuid": uuid}
+        
+def add_kantor(data):
+    uuid = data.get('uuid')
+    if not uuid:
+        uuid = str(uuidgen.uuid4())
+        data['uuid'] = uuid
+    title_before = data.get('title_before')
+    first_name = data.get('first_name')
+    middle_name = data.get('middle_name')
+    last_name = data.get('last_name')
+    title_after = data.get('title_after')
+    picture_url = data.get('picture_url')
+    location = data.get('location')
+    claim = data.get('claim')
+    bio = data.get('bio')
+    price = data.get('price_per_hour')
+    email = data.get('contact', {}).get('emails', [])
+    phone = data.get('contact', {}).get('telephone_numbers', [])
+    tags = data.get('tags', [])
+    new_tags = []
+    for tag in tags:
+        if isinstance(tag, dict):
+            tag_name = tag.pop("name", None)
+            if tag_name:
+                print(tag_name)
+                new_tag = add_tag(tag_name)
+                print(new_tag)
+                new_tags.append(new_tag)
+    tags = new_tags
+    data['tags'] = tags
+
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
         cursor.execute("INSERT INTO kantori (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, email, phone, uuid, tags) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (title_before, first_name, middle_name, last_name, picture_url, title_after, price, location, claim, bio, str(email), str(phone), str(uuid), str(tags)))
         
     connection.commit()
+    return data, 200
 
-def add_tag_to_db(name):
-    uuid = str(uuidgen.uuid4())
-    with sqlite3.connect(current_app.config['DATABASE']) as connection:
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO tags (tag_name, tag_id) VALUES (?, ?)", (name, uuid))
 
-    connection.commit()
-    return {"name": name, "uuid": uuid}
 
-def get_all_tags():
-    with sqlite3.connect(current_app.config['DATABASE']) as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM tags")
-        return cursor.fetchall()
+# Some more setup magical shit ¯\_(ツ)_/¯
 
 @click.command('init-db')
 @with_appcontext
