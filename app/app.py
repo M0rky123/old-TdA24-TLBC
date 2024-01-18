@@ -1,7 +1,7 @@
 import json
 from flask import Flask, make_response, render_template, request, jsonify
 from . import db
-from .db import add_kantor, get_count, get, get_all, delete, update, get_page
+from .db import add_kantor, filter_kantor, get_count, get, get_all, delete, update, get_page
 
 app = Flask(__name__, static_folder="static")
 app.config['DATABASE'] = './app/data/lecture.db'
@@ -76,6 +76,17 @@ def updatelec(lector_id):
 async def getsixlec(offset):
     page, status = get_page(offset)
     return page, status
+
+@app.route('/api/lecturers/filter', methods=['GET'])
+async def find_filtered():
+    request_data = request.json
+    loc = request_data.get("loc", None)
+    tag = request_data.get("tag", None)
+    if loc or tag:
+        data = filter_kantor(tag, loc)
+        return jsonify(data)
+    else:
+        return jsonify({"error": "At least one of 'loc' or 'tag' parameters is required."}), 400
 
 ########### FrontEnd ###########
 
