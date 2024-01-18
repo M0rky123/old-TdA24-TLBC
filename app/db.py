@@ -312,9 +312,7 @@ def filter_kantor(tag=None, loc=None):
         query_params = []
 
         if tag:
-            print(tag)
             tag_names = [t[1] for t in tags] 
-            print(tag_names)
 
             if tag in tag_names:
                 select_query += "tags LIKE ? AND "
@@ -327,30 +325,31 @@ def filter_kantor(tag=None, loc=None):
         if select_query.endswith(" AND "):
             select_query = select_query[:-5]
 
-        print(select_query, (f"{query_params}"))
-
         query = cursor.execute(select_query, tuple(query_params))
         result = query.fetchall()
-        print(type(result))
 
-        for lector in result:
-            lector["uuid"] = lector.pop("uuid", None)
-            lector["last_name"] = lector.pop("last_name", None)
-            lector["picture_url"] = lector.pop("picture_url", None)
-            lector["location"] = lector.pop("location", None)
-            lector["claim"] = lector.pop("claim", None)
-            lector["bio"] = lector.pop("bio", None)
-            lector["tags"] = eval(lector.pop("tags", None))
-            lector["price_per_hour"] = lector.pop("price", None)
-            lector["contact"] = {
-                "telephone_numbers": eval(lector.pop("phone", [])),
-                "emails": eval(lector.pop("email", []))
-            }
+        if result:
 
-            for key in lector.keys():
-                if lector[key] is None:
-                    lector[key] = ""
-        return result
+            for lector in result:
+                lector["uuid"] = lector.pop("uuid", None)
+                lector["last_name"] = lector.pop("last_name", None)
+                lector["picture_url"] = lector.pop("picture_url", None)
+                lector["location"] = lector.pop("location", None)
+                lector["claim"] = lector.pop("claim", None)
+                lector["bio"] = lector.pop("bio", None)
+                lector["tags"] = eval(lector.pop("tags", None))
+                lector["price_per_hour"] = lector.pop("price", None)
+                lector["contact"] = {
+                    "telephone_numbers": eval(lector.pop("phone", [])),
+                    "emails": eval(lector.pop("email", []))
+                }
+
+                for key in lector.keys():
+                    if lector[key] is None:
+                        lector[key] = ""
+            return result
+        else:
+            return {"message": "No Lecturers found"}
 
 # Some more setup magical shit ¯\_(ツ)_/¯
 
