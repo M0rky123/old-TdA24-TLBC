@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS kantori (
 
 INIT_DB_STATEMENTS = [CREATE_TAG_TABLE, CREATE_KANTORI_TABLE]
 
-# TODO: Refactor the functions, make function names more continual, delete useless comments, add comments to the code that make sense, don't fuck up what work
+# DONE: Refactor the functions, make function names more continual, delete useless comments, add comments to the code that make sense, don't fuck up what works
 
 
 # Setup functions
