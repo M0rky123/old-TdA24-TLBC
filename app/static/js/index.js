@@ -4,7 +4,7 @@ const maxLecturersPage = Math.ceil(lecturerCount / 6);
 const cardCount = 6;
 let currentPage = 0;
 
-console.log(filterMinMax, listOfTags, lecturerCount);
+console.log(filterMinMax, listOfTags, lecturerCount, listOfLocation);
 
 function filtersCreate() {
   const tags = document.getElementById("filter-tags");
@@ -14,6 +14,12 @@ function filtersCreate() {
   for (let i = 0; i < listOfTags.length; i++) {
     tags.innerHTML += `<li data-uuid=${listOfTags[i][2]}>${listOfTags[i][1]}</li>`;
   }
+
+  for (let i = 0; i < listOfLocation.length; i++) {
+    location.innerHTML += `<li>${listOfLocation[i][0]}</li>`;
+  }
+
+  price.innerHTML += `<li>${filterMinMax.min}<input type="range" min="${filterMinMax.min}" max="${filterMinMax.max}">${filterMinMax.max}</li>`;
 }
 
 filtersCreate();
