@@ -49,21 +49,22 @@ function filtersCreate() {
     location.append(li);
   }
 
-  price.innerHTML += `<li><span id="">${filterMinMax.min}</span><span>${filterMinMax.max}</span></li>`;
-  price.innerHTML += `<li><input type="range" min="${filterMinMax.min}" max="${filterMinMax.max}"></li>`;
+  price.innerText += `${filterMinMax.min} - ${filterMinMax.max}`;
+  price.innerHTML += `<li><label for="minValue">Min: </label>
+  <input type="number" name="minValue"></li>`;
+  price.innerHTML += `<li><label for="maxValue">Max: </label>
+  <input type="number" name="maxValue"></li>`;
 }
 
 filtersCreate();
 
 function filtersGet(tagsArray, locationsArray, pricesArray) {
-  const bodyRequest = { location: locationsArray, tags: tagsArray, min_max: pricesArray };
-
   fetch("/api/lecturers/filter", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(bodyRequest),
+    body: JSON.stringify({ location: locationsArray, tags: tagsArray, min_max: pricesArray }),
   })
     .then((response) => response.json())
     .then((json) => {
@@ -102,7 +103,9 @@ function filtersGet(tagsArray, locationsArray, pricesArray) {
     });
 }
 
-document.getElementById("search").addEventListener("click", filtersGet(filterTagsArray, filterLocationsArray, filterPricesArray));
+document.getElementById("search").addEventListener("click", () => {
+  filtersGet(filterTagsArray, filterLocationsArray, filterPricesArray);
+});
 
 function createLectCards(page) {
   let cards = document.getElementById("cards");

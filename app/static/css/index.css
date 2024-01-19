@@ -163,6 +163,10 @@ hr {
 .filtering button:focus {
   background: var(--col-white);
   color: var(--col-dark);
+}
+
+.filtering button:not(#search):hover,
+.filtering button:not(#search):focus {
   border-radius: 2rem 2rem 0 0;
 }
 
@@ -192,6 +196,16 @@ hr {
   gap: 1rem;
 }
 
+.filtering button:nth-child(3) #filter-price {
+  height: fit-content;
+  padding-bottom: 1rem;
+}
+
+/* .filtering button:nth-child(3) li:hover,
+.filtering button:nth-child(3) li:focus {
+  background: var(--col-white);
+} */
+
 .filtering ul {
   position: absolute;
   top: 3rem;
@@ -213,11 +227,6 @@ hr {
   color: var(--col-dark);
   cursor: pointer;
   z-index: 0;
-}
-
-.filtering .filter-price li:first-of-type {
-  display: flex;
-  justify-content: space-between;
 }
 
 .filtering li:hover,
