@@ -4,6 +4,15 @@ const maxLecturersPage = Math.ceil(lecturerCount / 6);
 const cardCount = 6;
 let currentPage = 0;
 
+function filtersCreate() {
+  const tags = document.getElementById("filter-tags");
+  const location = document.getElementById("filter-location");
+  const price = document.getElementById("filter-price");
+
+  
+}
+
+function filterClick() {}
 function createLectCards(page) {
   let cards = document.getElementById("cards");
   let lecturers = document.createDocumentFragment();
