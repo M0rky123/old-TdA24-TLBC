@@ -130,7 +130,7 @@ hr {
   color: var(--col-white);
 }
 
-.filtering {
+/* .filtering {
   width: 100%;
   min-height: 3rem;
   display: flex;
@@ -240,7 +240,7 @@ hr {
 .filter-active {
   background: var(--col-black);
   color: var(--col-white) !important;
-}
+} */
 
 .cards {
   display: grid;

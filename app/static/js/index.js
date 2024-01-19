@@ -1,12 +1,10 @@
 // LECTURERS - PRINT INTO html
 
-const maxLecturersPage = Math.ceil(lecturerCount / 6);
+let maxLecturersPage = Math.ceil(lecturerCount / 6);
 const cardCount = 6;
 let currentPage = 0;
 
-console.log(filterMinMax, listOfTags, lecturerCount, listOfLocation);
-
-let filterTagsArray = [];
+/* let filterTagsArray = [];
 let filterLocationsArray = [];
 let filterPricesArray = [];
 
@@ -51,9 +49,9 @@ function filtersCreate() {
 
   price.innerText += `${filterMinMax.min} - ${filterMinMax.max}`;
   price.innerHTML += `<li><label for="minValue">Min: </label>
-  <input type="number" name="minValue"></li>`;
+  <input type="number" id="minValue" min="${filterMinMax.min}" max="${filterMinMax.max}"></li>`;
   price.innerHTML += `<li><label for="maxValue">Max: </label>
-  <input type="number" name="maxValue"></li>`;
+  <input type="number" id="maxValue" min="${filterMinMax.min}" max="${filterMinMax.max}"></li>`;
 }
 
 filtersCreate();
@@ -62,6 +60,12 @@ function filtersGet(tagsArray, locationsArray, pricesArray) {
   let cards = document.getElementById("cards");
   let lecturers = document.createDocumentFragment();
 
+  if (tagsArray.length == 0 && locationsArray.length == 0 && pricesArray.length == 0) {
+    createLectCards(1);
+    lectCardsPaging(lecturerCount);
+    return;
+  }
+
   fetch("/api/lecturers/filter", {
     method: "POST",
     headers: {
@@ -69,8 +73,16 @@ function filtersGet(tagsArray, locationsArray, pricesArray) {
     },
     body: JSON.stringify({ location: locationsArray, tags: tagsArray, min_max: pricesArray }),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        createLectCards();
+        return false;
+      } else {
+        return response.json();
+      }
+    })
     .then((json) => {
+      if (json == false) return;
       for (let i = 0; i < cardCount; i++) {
         let element = document.createElement("div");
         element.classList.add("card");
@@ -103,13 +115,16 @@ function filtersGet(tagsArray, locationsArray, pricesArray) {
       }
       cards.innerHTML = "";
       cards.appendChild(lecturers);
-    })
-    .finally(lectCardsPaging());
+      console.log(json);
+      lectCardsPaging(json[json.length - 1].lecturer_count);
+      buttonsDisabler();
+      outerNumBtnDisabler();
+    });
 }
 
 document.getElementById("search").addEventListener("click", () => {
   filtersGet(filterTagsArray, filterLocationsArray, filterPricesArray);
-});
+}); */
 
 function createLectCards(page) {
   let cards = document.getElementById("cards");
@@ -203,10 +218,10 @@ function loadLectCards(page) {
 const lecturersBTNPrevious = document.getElementById("previous");
 const lecturersBTNNext = document.getElementById("next");
 
-function lectCardsPaging() {
+function lectCardsPaging(maxLecPage) {
   const pages = document.getElementById("pages");
   pages.innerHTML = "";
-  const maxPageLists = Math.min(5, maxLecturersPage);
+  const maxPageLists = Math.min(5, Math.ceil(maxLecPage / 6));
 
   for (let i = 1; i <= maxPageLists; i++) {
     const page = document.createElement("button");
@@ -218,22 +233,26 @@ function lectCardsPaging() {
     page.innerText = i;
     pages.append(page);
   }
-
-  pages.children[0].addEventListener("click", () => {
-    dedFromListing(pages.children[0], 0, 2);
-  });
-  pages.children[1].addEventListener("click", () => {
-    dedFromListing(pages.children[1], 1, 1);
-  });
-  pages.children[2].addEventListener("click", () => {
-    activePage(2);
-  });
-  pages.children[3].addEventListener("click", () => {
-    addToListing(pages.children[3], 3, 1);
-  });
-  pages.children[4].addEventListener("click", () => {
-    addToListing(pages.children[4], 4, 2);
-  });
+  if (document.body.contains(pages.children[0]))
+    pages.children[0].addEventListener("click", () => {
+      dedFromListing(pages.children[0], 0, 2);
+    });
+  if (document.body.contains(pages.children[1]))
+    pages.children[1].addEventListener("click", () => {
+      dedFromListing(pages.children[1], 1, 1);
+    });
+  if (document.body.contains(pages.children[2]))
+    pages.children[2].addEventListener("click", () => {
+      activePage(2);
+    });
+  if (document.body.contains(pages.children[3]))
+    pages.children[3].addEventListener("click", () => {
+      addToListing(pages.children[3], 3, 1);
+    });
+  if (document.body.contains(pages.children[4]))
+    pages.children[4].addEventListener("click", () => {
+      addToListing(pages.children[4], 4, 2);
+    });
 
   pages.children[0].setAttribute("id", "active-page");
   currentPage = 0;
@@ -305,8 +324,6 @@ function lectCardsPaging() {
   }
 }
 
-console.log(currentPage);
-
 function outerNumBtnDisabler() {
   document.getElementById("active-page").innerText == 1 ? (lecturersBTNPrevious.disabled = true) : (lecturersBTNPrevious.disabled = false);
   document.getElementById("active-page").innerText == maxLecturersPage ? (lecturersBTNNext.disabled = true) : (lecturersBTNNext.disabled = false);
@@ -335,5 +352,5 @@ function horizontalScroll(container) {
 
 createLectCards(1);
 horizontalScroll(document.getElementsByClassName("tags"));
-lectCardsPaging();
+lectCardsPaging(lecturerCount);
 outerNumBtnDisabler();
