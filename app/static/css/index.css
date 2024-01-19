@@ -215,6 +215,11 @@ hr {
   z-index: 0;
 }
 
+.filtering .filter-price li:first-of-type {
+  display: flex;
+  justify-content: space-between;
+}
+
 .filtering li:hover,
 .filtering li:focus {
   background: var(--col-dark);

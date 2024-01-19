@@ -19,7 +19,8 @@ function filtersCreate() {
     location.innerHTML += `<li>${listOfLocation[i][0]}</li>`;
   }
 
-  price.innerHTML += `<li>${filterMinMax.min}<input type="range" min="${filterMinMax.min}" max="${filterMinMax.max}">${filterMinMax.max}</li>`;
+  price.innerHTML += `<li><span id="">${filterMinMax.min}</span><span>${filterMinMax.max}</span></li>`;
+  price.innerHTML += `<li><input type="range" min="${filterMinMax.min}" max="${filterMinMax.max}"></li>`;
 }
 
 filtersCreate();
