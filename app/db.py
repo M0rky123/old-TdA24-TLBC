@@ -309,7 +309,7 @@ def add_kantor(data):
     connection.commit()
     return data, 200
 
-def filter_kantor(tag=None, loc=None):
+def filter_kantor(filtered_tags=None, loc=None, min_max=None):
     tags = get_all_tags()
     
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
@@ -318,16 +318,23 @@ def filter_kantor(tag=None, loc=None):
         select_query = "SELECT * FROM kantori WHERE "
         query_params = []
 
-        if tag:
+        if filtered_tags:
             tag_names = [t[1] for t in tags] 
 
-            if tag in tag_names:
-                select_query += "tags LIKE ? AND "
-                query_params.append(f"%{tag}%")
+            for tag in filtered_tags:
+                if tag in tag_names:
+                    select_query += "tags LIKE ? AND "
+                    query_params.append(f"%{filtered_tags}%")
 
         if loc:
-            select_query += "location = ? AND "
-            query_params.append(loc)
+            for location in loc:
+                select_query += "location = ? AND "
+                query_params.append(location)
+
+        if min_max:
+            select_query += "price BETWEEN ? AND ? AND "
+            query_params.append(min_max[0])
+            query_params.append(min_max[1])
 
         if select_query.endswith(" AND "):
             select_query = select_query[:-5]

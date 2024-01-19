@@ -1,7 +1,7 @@
 import json
 from flask import Flask, make_response, render_template, request, jsonify
 from . import db
-from .db import add_kantor, filter_kantor, get_count, get, get_all, delete, price_min_max, update, get_page
+from .db import add_kantor, filter_kantor, get_all_tags, get_count, get, get_all, delete, price_min_max, update, get_page
 
 app = Flask(__name__, static_folder="static")
 app.config['DATABASE'] = './app/data/lecture.db'
@@ -82,8 +82,9 @@ async def find_filtered():
     request_data = request.json
     loc = request_data.get("loc", None)
     tag = request_data.get("tag", None)
-    if loc or tag:
-        data = filter_kantor(tag, loc)
+    min_max = request_data.get("min_max", None)
+    if loc or tag or min_max:
+        data = filter_kantor(tag, loc, min_max)
         return jsonify(data)
     else:
         return jsonify({"error": "At least one of 'loc' or 'tag' parameters is required."}), 400
@@ -95,7 +96,8 @@ def main():
     data = get_all()
     count = get_count()
     min_max = price_min_max()
-    return render_template("index.html", data = data, count = count, min_max = min_max)
+    existing_tags = get_all_tags()
+    return render_template("index.html", data = data, count = count, min_max = min_max, existing_tags = existing_tags)
 
 @app.route('/lecturer')
 def lecturer():
