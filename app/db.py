@@ -178,8 +178,7 @@ def price_min_max():
         cursor = connection.cursor()
         cursor.execute("SELECT MIN(price), MAX(price) FROM kantori")
         data = cursor.fetchone()
-        print(data)
-        return data
+        return {"min": data[0], "max": data[1]} 
 
 def get_all_tags():
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
