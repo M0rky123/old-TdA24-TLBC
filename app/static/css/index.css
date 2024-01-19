@@ -130,6 +130,45 @@ hr {
   color: var(--col-white);
 }
 
+.filtering {
+  width: 100%;
+  min-height: 3rem;
+  display: flex;
+  gap: 0 1rem;
+}
+
+.filtering > button {
+  border: 0;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  flex: 1;
+  background: var(--col-dark);
+  color: var(--col-white);
+  border-radius: 20rem;
+}
+
+.filtering button:hover,
+.filtering button:focus {
+  background: var(--col-white);
+  color: var(--col-dark);
+}
+
+.filtering button:hover span,
+.filtering button:focus span {
+  color: var(--col-dark);
+  rotate: 90deg;
+}
+
+.filtering span {
+  font-size: 1rem;
+  rotate: -90deg;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
