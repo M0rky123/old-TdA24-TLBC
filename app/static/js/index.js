@@ -1,18 +1,17 @@
 // LECTURERS - PRINT INTO html
 
-let currentLecturersPage = 1;
 const maxLecturersPage = Math.ceil(lecturerCount / 6);
 const cardCount = 6;
+let currentPage = 0;
 
 function createLectCards(page) {
-  buttonsDisabler();
   let cards = document.getElementById("cards");
   let lecturers = document.createDocumentFragment();
 
   fetch(`/api/lecturers/main/${page}`)
     .then((response) => response.json())
     .then((json) => {
-      for (let i = 0; i < json.length; i++) {
+      for (let i = 0; i < cardCount; i++) {
         let element = document.createElement("div");
         element.classList.add("card");
 
@@ -49,7 +48,6 @@ function createLectCards(page) {
 
 function loadLectCards(page) {
   let cards = document.getElementById("cards");
-  buttonsDisabler();
 
   fetch(`/api/lecturers/main/${page}`)
     .then((response) => response.json())
@@ -74,11 +72,9 @@ function loadLectCards(page) {
 
           claim.item(i).textContent = json[i].claim;
 
-          location.item(i).innerHTML = "";
-          location.item(i).append(json[i].location);
+          location.item(i).innerHTML = `<i class="fa-solid fa-location-dot"></i>${json[i].location}`;
 
-          price.item(i).innerHTML = "";
-          price.item(i).append(json[i].price_per_hour);
+          price.item(i).innerHTML = `<i class="fa-solid fa-coins"></i>${json[i].price_per_hour} Kč / hod.`;
 
           let list = "<ul>";
           for (let j = 0; j < json[i].tags.length; j++) {
@@ -97,37 +93,126 @@ function loadLectCards(page) {
     });
 }
 
-function lectCardsPaging(pages) {
-  const container = document.getElementById("pages");
+const lecturersBTNPrevious = document.getElementById("previous");
+const lecturersBTNNext = document.getElementById("next");
 
-  for (let pagescount = 1; pagescount <= pages; pagescount++) {
+function lectCardsPaging() {
+  const pages = document.getElementById("pages");
+  const maxPageLists = 5;
+
+  for (let i = 1; i <= maxPageLists; i++) {
     const page = document.createElement("button");
     page.setAttribute("class", "page");
     page.addEventListener("click", () => {
-      loadLectCards(pagescount);
-      activePage(currentLecturersPage, pagescount);
-      currentLecturersPage = pagescount;
-      outerNumBtnDisabler();
+      loadLectCards(page.innerText);
+      buttonsDisabler();
     });
-    page.innerText = pagescount;
-    pagesElement.append(page);
+    page.innerText = i;
+    pages.append(page);
   }
 
-  container.children[0].setAttribute("id", "active-page");
+  pages.children[0].addEventListener("click", () => {
+    dedFromListing(pages.children[0], 0, 2);
+  });
+  pages.children[1].addEventListener("click", () => {
+    dedFromListing(pages.children[1], 1, 1);
+  });
+  pages.children[2].addEventListener("click", () => {
+    activePage(2);
+  });
+  pages.children[3].addEventListener("click", () => {
+    addToListing(pages.children[3], 3, 1);
+  });
+  pages.children[4].addEventListener("click", () => {
+    addToListing(pages.children[4], 4, 2);
+  });
+
+  pages.children[0].setAttribute("id", "active-page");
+  currentPage = 0;
+
+  function addToListing(btn, nthChild, add) {
+    intBtn = parseInt(btn.innerText);
+    if (intBtn < maxLecturersPage - 1) {
+      pages.childNodes.forEach((e) => {
+        e.innerText = parseInt(e.innerText) + add;
+      });
+      activePage(nthChild - add);
+    } else {
+      activePage(nthChild);
+    }
+  }
+
+  function dedFromListing(btn, nthChild, ded) {
+    intBtn = parseInt(btn.innerText);
+    if (intBtn > 2) {
+      pages.childNodes.forEach((e) => {
+        e.innerText = parseInt(e.innerText) - ded;
+      });
+      activePage(nthChild + ded);
+    } else {
+      activePage(nthChild);
+    }
+  }
+
+  lecturersBTNPrevious.addEventListener("click", () => {
+    let activeTEXT = parseInt(document.getElementById("active-page").innerText);
+    if (currentPage < maxLecturersPage - 4 && activeTEXT > 3) {
+      console.log(activeTEXT);
+      pages.childNodes.forEach((e) => {
+        e.innerText = parseInt(e.innerText) - 1;
+      });
+      currentPage -= 1;
+      activePage(currentPage + 1);
+      loadLectCards(activeTEXT - 1);
+    } else {
+      console.log(activeTEXT);
+      activePage(currentPage - 1);
+      loadLectCards(activeTEXT - 1);
+    }
+    buttonsDisabler();
+  });
+
+  lecturersBTNNext.addEventListener("click", () => {
+    let activeTEXT = parseInt(document.getElementById("active-page").innerText);
+    if (currentPage > 1 && activeTEXT < maxLecturersPage - 2) {
+      console.log(activeTEXT);
+      pages.childNodes.forEach((e) => {
+        e.innerText = parseInt(e.innerText) + 1;
+      });
+      currentPage += 1;
+      activePage(currentPage - 1);
+      loadLectCards(activeTEXT + 1);
+    } else {
+      console.log(activeTEXT);
+      activePage(currentPage + 1);
+      loadLectCards(activeTEXT + 1);
+    }
+    buttonsDisabler();
+  });
+
+  function activePage(newPage) {
+    currentPage = newPage;
+    document.getElementById("active-page").removeAttribute("id");
+    document.getElementById("pages").children[currentPage].setAttribute("id", "active-page");
+  }
 }
 
-function activePage(oldPage, newPage) {
-  const container = document.getElementById("pages");
-  container.children[oldPage - 1].removeAttribute("id");
-  container.children[newPage - 1].setAttribute("id", "active-page");
-}
+console.log(currentPage);
 
 function outerNumBtnDisabler() {
-  currentLecturersPage == 1 ? (lecturersBTNPrevious.disabled = true) : (lecturersBTNPrevious.disabled = false);
-
-  currentLecturersPage == maxLecturersPage ? (lecturersBTNNext.disabled = true) : (lecturersBTNNext.disabled = false);
+  document.getElementById("active-page").innerText == 1 ? (lecturersBTNPrevious.disabled = true) : (lecturersBTNPrevious.disabled = false);
+  document.getElementById("active-page").innerText == maxLecturersPage ? (lecturersBTNNext.disabled = true) : (lecturersBTNNext.disabled = false);
 }
 
+function buttonsDisabler() {
+  lecturersBTNNext.disabled = true;
+  lecturersBTNPrevious.disabled = true;
+  setTimeout(() => {
+    lecturersBTNNext.disabled = false;
+    lecturersBTNPrevious.disabled = false;
+    outerNumBtnDisabler();
+  }, 200);
+}
 // TAGS - HORIZONTAL SCROLL
 
 // write me a function to horizontal scroll
@@ -140,35 +225,7 @@ function horizontalScroll(container) {
   }
 }
 
-const lecturersBTNPrevious = document.getElementById("previous");
-const lecturersBTNNext = document.getElementById("next");
-const pagesElement = document.getElementById("pages");
-
-lecturersBTNPrevious.addEventListener("click", () => {
-  activePage(currentLecturersPage, currentLecturersPage - 1);
-  currentLecturersPage--;
-  loadLectCards(currentLecturersPage);
-  buttonsDisabler();
-});
-
-lecturersBTNNext.addEventListener("click", () => {
-  activePage(currentLecturersPage, currentLecturersPage + 1);
-  currentLecturersPage++;
-  loadLectCards(currentLecturersPage);
-  buttonsDisabler();
-});
-
-function buttonsDisabler() {
-  lecturersBTNNext.disabled = true;
-  lecturersBTNPrevious.disabled = true;
-  setTimeout(() => {
-    lecturersBTNNext.disabled = false;
-    lecturersBTNPrevious.disabled = false;
-    outerNumBtnDisabler();
-  }, 200);
-}
-
 createLectCards(1);
 horizontalScroll(document.getElementsByClassName("tags"));
+lectCardsPaging();
 outerNumBtnDisabler();
-lectCardsPaging(maxLecturersPage);
