@@ -1,7 +1,7 @@
 import json
 from flask import Flask, make_response, render_template, request, jsonify
 from . import db
-from .db import add_kantor, filter_kantor, get_all_tags, get_count, get, get_all, delete, price_min_max, update, get_page
+from .db import add_kantor, filter_kantor, get_all_tags, get_count, get, get_all, delete, get_locations, price_min_max, update, get_page
 
 app = Flask(__name__, static_folder="static")
 app.config['DATABASE'] = './app/data/lecture.db'
@@ -96,9 +96,10 @@ def main():
     data = get_all()
     count = get_count()
     min_max = price_min_max()
+    location = get_locations()
     existing_tags = get_all_tags()
     print(json.dumps(existing_tags))
-    return render_template("index.html", data = data, count = count, min_max = min_max, existing_tags = existing_tags)
+    return render_template("index.html", data = data, count = count, min_max = min_max, existing_tags = existing_tags, location = location)
 
 @app.route('/lecturer')
 def lecturer():

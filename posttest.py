@@ -8,8 +8,8 @@ url_get_all = "http://127.0.0.1:5000/api/lecturers"
 
 # Your JSON data for POST request
 post_data = {
-    "min_max": [811, 916],
-    "tag": ["Fitness"]
+    "tag": ["Fitness", "Ethics"],
+    "loc": ["Portland", "Denver"]
 }
 
 

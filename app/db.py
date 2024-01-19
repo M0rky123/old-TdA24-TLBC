@@ -185,6 +185,12 @@ def get_all_tags():
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM tags")
         return cursor.fetchall()
+    
+def get_locations():
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT DISTINCT location FROM kantori")
+        return cursor.fetchall()
 
 def update(uuid, kantor_data):
     """
@@ -324,12 +330,15 @@ def filter_kantor(filtered_tags=None, loc=None, min_max=None):
             for tag in filtered_tags:
                 if tag in tag_names:
                     select_query += "tags LIKE ? AND "
-                    query_params.append(f"%{filtered_tags}%")
+                    query_params.append(f"%{tag}%")
 
         if loc:
             for location in loc:
-                select_query += "location = ? AND "
+                select_query += "location = ? OR "
                 query_params.append(location)
+            if select_query.endswith(" OR "):
+                select_query = select_query[:-4]
+                select_query += " AND "
 
         if min_max:
             select_query += "price BETWEEN ? AND ? AND "
@@ -338,6 +347,8 @@ def filter_kantor(filtered_tags=None, loc=None, min_max=None):
 
         if select_query.endswith(" AND "):
             select_query = select_query[:-5]
+
+        print(select_query)
 
         query = cursor.execute(select_query, tuple(query_params))
         result = query.fetchall()
