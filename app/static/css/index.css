@@ -226,6 +226,11 @@ hr {
   color: var(--col-white);
 }
 
+.filter-active {
+  background: var(--col-black);
+  color: var(--col-white) !important;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

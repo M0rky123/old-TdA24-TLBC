@@ -6,17 +6,47 @@ let currentPage = 0;
 
 console.log(filterMinMax, listOfTags, lecturerCount, listOfLocation);
 
+let filterTagsArray = [];
+let filterLocationsArray = [];
+let filterPricesArray = [];
+
 function filtersCreate() {
   const tags = document.getElementById("filter-tags");
   const location = document.getElementById("filter-location");
   const price = document.getElementById("filter-price");
 
   for (let i = 0; i < listOfTags.length; i++) {
-    tags.innerHTML += `<li data-uuid=${listOfTags[i][2]}>${listOfTags[i][1]}</li>`;
+    let li = document.createElement("li");
+    li.setAttribute("data-uuid", listOfTags[i][2]);
+    li.innerText = listOfTags[i][1];
+    li.addEventListener("click", () => {
+      if (!filterTagsArray.includes(li.getAttribute("data-uuid"))) {
+        filterTagsArray.push(li.getAttribute("data-uuid"));
+        li.classList.add("filter-active");
+      } else {
+        const index = filterTagsArray.indexOf(li.getAttribute("data-uuid"));
+        filterTagsArray.splice(index, 1);
+        li.classList.remove("filter-active");
+      }
+      console.log(filterTagsArray);
+    });
+    tags.append(li);
   }
 
   for (let i = 0; i < listOfLocation.length; i++) {
-    location.innerHTML += `<li>${listOfLocation[i][0]}</li>`;
+    let li = document.createElement("li");
+    li.innerText = listOfLocation[i][0];
+    li.addEventListener("click", () => {
+      if (!filterLocationsArray.includes(li.innerText)) {
+        filterLocationsArray.push(li.innerText);
+        li.classList.add("filter-active");
+      } else {
+        const index = filterLocationsArray.indexOf(li.innerText);
+        filterLocationsArray.splice(index, 1);
+        li.classList.remove("filter-active");
+      }
+    });
+    location.append(li);
   }
 
   price.innerHTML += `<li><span id="">${filterMinMax.min}</span><span>${filterMinMax.max}</span></li>`;
@@ -24,6 +54,55 @@ function filtersCreate() {
 }
 
 filtersCreate();
+
+function filtersGet(tagsArray, locationsArray, pricesArray) {
+  const bodyRequest = { location: locationsArray, tags: tagsArray, min_max: pricesArray };
+
+  fetch("/api/lecturers/filter", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bodyRequest),
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      for (let i = 0; i < cardCount; i++) {
+        let element = document.createElement("div");
+        element.classList.add("card");
+
+        try {
+          let list = "<ul>";
+
+          for (let j = 0; j < json[i].tags.length; j++) {
+            list += `<li><button>${json[i].tags[j].name}</button></li>`;
+          }
+          list += "</ul>";
+
+          element.innerHTML = `<div class="lecturer"><img class="lect-img" src="${
+            json[i].picture_url ? json[i].picture_url : "https://media1.tenor.com/m/QA6mPKs100UAAAAC/caught-in.gif"
+          }" alt="LECTURER PROFILE PICTURE" width="80px" height="80px"><div class="info"><div><h4 class="lect-fname">${
+            json[i].title_before + " " + json[i].first_name + " " + json[i].middle_name + " " + json[i].last_name + " " + json[i].title_after
+          }</h4><p class="lect-claim">${
+            json[i].claim
+          }</p></div><div class="info-icons"><div class="location"><span class="icon lect-location"><i class="fa-solid fa-location-dot"></i>${
+            json[i].location
+          }</span></div><div class="price"><span class="icon lect-price"><i class="fa-solid fa-coins"></i>${
+            json[i].price_per_hour
+          }  Kč / hod.</span></div></div></div></div><div><div class="tags lect-tags">${list}</div><a class="lect-uuid" href="/lecturer/${
+            json[i].uuid
+          }"><div class="visit"><span>Více info</span><span class="icon"><i class="fa-solid fa-arrow-right"></i></span></div></a></div>`;
+        } catch (error) {
+          element.classList.value = "blank-card";
+        }
+        lecturers.appendChild(element);
+      }
+      cards.innerHTML = "";
+      cards.appendChild(lecturers);
+    });
+}
+
+document.getElementById("search").addEventListener("click", filtersGet(filterTagsArray, filterLocationsArray, filterPricesArray));
 
 function createLectCards(page) {
   let cards = document.getElementById("cards");
@@ -54,7 +133,7 @@ function createLectCards(page) {
             json[i].location
           }</span></div><div class="price"><span class="icon lect-price"><i class="fa-solid fa-coins"></i>${
             json[i].price_per_hour
-          } Kč / hod.</span></div></div></div></div><div><div class="tags lect-tags">${list}</div><a class="lect-uuid" href="/lecturer/${
+          }  Kč / hod.</span></div></div></div></div><div><div class="tags lect-tags">${list}</div><a class="lect-uuid" href="/lecturer/${
             json[i].uuid
           }"><div class="visit"><span>Více info</span><span class="icon"><i class="fa-solid fa-arrow-right"></i></span></div></a></div>`;
         } catch (error) {
