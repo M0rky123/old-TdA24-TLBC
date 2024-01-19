@@ -201,10 +201,12 @@ hr {
   padding-bottom: 1rem;
 }
 
-/* .filtering button:nth-child(3) li:hover,
-.filtering button:nth-child(3) li:focus {
+.filtering button:nth-of-type(3) li:hover,
+.filtering button:nth-of-type(3) li:focus {
   background: var(--col-white);
-} */
+  color: var(--col-dark);
+  cursor: default;
+}
 
 .filtering ul {
   position: absolute;
