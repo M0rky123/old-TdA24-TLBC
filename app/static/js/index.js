@@ -104,6 +104,8 @@ function filtersGet(tagsArray, locationsArray, pricesArray) {
       cards.innerHTML = "";
       cards.appendChild(lecturers);
     });
+
+  lectCardsPaging();
 }
 
 document.getElementById("search").addEventListener("click", () => {
