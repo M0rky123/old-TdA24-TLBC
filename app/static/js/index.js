@@ -4,15 +4,20 @@ const maxLecturersPage = Math.ceil(lecturerCount / 6);
 const cardCount = 6;
 let currentPage = 0;
 
-console.log(filterMinMax, listOfTags);
+console.log(filterMinMax, listOfTags, lecturerCount);
 
 function filtersCreate() {
   const tags = document.getElementById("filter-tags");
   const location = document.getElementById("filter-location");
   const price = document.getElementById("filter-price");
+
+  for (let i = 0; i < listOfTags.length; i++) {
+    tags.innerHTML += `<li data-uuid=${listOfTags[i][2]}>${listOfTags[i][1]}</li>`;
+  }
 }
 
-function filterClick() {}
+filtersCreate();
+
 function createLectCards(page) {
   let cards = document.getElementById("cards");
   let lecturers = document.createDocumentFragment();
