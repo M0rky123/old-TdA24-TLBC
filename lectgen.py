@@ -25,7 +25,7 @@ def generate_random_person():
                     "name": random.choice(tags)
                 } for i in range(random.randint(1, 10))
             ],
-            "price_per_hour": random.uniform(800, 1500),
+            "price_per_hour": random.randint(800, 1500),
             "contact": {
                 "telephone_numbers": [f"+420 {random.randint(100, 999)} {random.randint(100, 999)} {random.randint(100, 999)}" for _ in range(random.randint(1, 3))],
                 "emails": [f"{random.choice(first_names)}.{random.choice(last_names)}@gmail.com" for _ in range(random.randint(1, 3))]
