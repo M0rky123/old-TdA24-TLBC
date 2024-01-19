@@ -97,7 +97,8 @@ def main():
     count = get_count()
     min_max = price_min_max()
     existing_tags = get_all_tags()
-    return render_template("index.html", data = data, count = count, min_max = min_max, existing_tags = existing_tags)
+    print(existing_tags)
+    return render_template("index.html", data = data, count = count, min_max = min_max, existing_tags = jsonify(existing_tags))
 
 @app.route('/lecturer')
 def lecturer():
