@@ -325,12 +325,11 @@ def filter_kantor(filtered_tags=None, loc=None, min_max=None):
         query_params = []
 
         if filtered_tags:
-            tag_names = [t[1] for t in tags] 
-
-            for tag in filtered_tags:
-                if tag in tag_names:
-                    select_query += "tags LIKE ? AND "
-                    query_params.append(f"%{tag}%")
+            tag_names = [t[2] for t in tags]
+            print(tag_names)
+            tag_condition = " OR ".join(["tags LIKE ?" for i in filtered_tags])
+            select_query += f"({tag_condition}) AND "
+            query_params.extend([f"%{tag}%" for tag in filtered_tags if tag in tag_names])
 
         if loc:
             for location in loc:
