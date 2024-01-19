@@ -379,11 +379,11 @@ hr {
   color: var(--col-dark);
 }
 
-.controls button:first-of-type .icon .fa-solid {
+.controls .previous .icon .fa-solid {
   transform: translateY(5%);
 }
 
-.controls button:last-of-type .icon .fa-solid {
+.controls .next .icon .fa-solid {
   transform: translateY(15%);
 }
 
