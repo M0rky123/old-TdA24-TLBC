@@ -103,9 +103,8 @@ function filtersGet(tagsArray, locationsArray, pricesArray) {
       }
       cards.innerHTML = "";
       cards.appendChild(lecturers);
-    });
-
-  lectCardsPaging();
+    })
+    .finally(lectCardsPaging());
 }
 
 document.getElementById("search").addEventListener("click", () => {
@@ -206,7 +205,8 @@ const lecturersBTNNext = document.getElementById("next");
 
 function lectCardsPaging() {
   const pages = document.getElementById("pages");
-  const maxPageLists = 5;
+  pages.innerHTML = "";
+  const maxPageLists = Math.min(5, maxLecturersPage);
 
   for (let i = 1; i <= maxPageLists; i++) {
     const page = document.createElement("button");
