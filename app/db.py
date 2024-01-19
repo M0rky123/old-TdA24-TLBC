@@ -353,6 +353,7 @@ def filter_kantor(filtered_tags=None, loc=None, min_max=None):
         result = query.fetchall()
 
         if result:
+            
 
             for lector in result:
                 lector["uuid"] = lector.pop("uuid", None)
@@ -371,6 +372,9 @@ def filter_kantor(filtered_tags=None, loc=None, min_max=None):
                 for key in lector.keys():
                     if lector[key] is None:
                         lector[key] = ""
+
+            result_count = len(result)
+            result.append({"lecturer_count": result_count})
             return result
         else:
             return {"message": "No Lecturers found"}
