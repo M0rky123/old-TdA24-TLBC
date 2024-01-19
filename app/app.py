@@ -77,11 +77,11 @@ async def getsixlec(offset):
     page, status = get_page(offset)
     return page, status
 
-@app.route('/api/lecturers/filter', methods=['GET'])
+@app.route('/api/lecturers/filter', methods=['POST'])
 async def find_filtered():
     request_data = request.json
-    loc = request_data.get("loc", None)
-    tag = request_data.get("tag", None)
+    loc = request_data.get("location", None)
+    tag = request_data.get("tags", None)
     min_max = request_data.get("min_max", None)
     if loc or tag or min_max:
         data = filter_kantor(tag, loc, min_max)
@@ -107,6 +107,10 @@ def lecturer():
         data = json.load(file)
 
     return render_template("lecturer.html", lecturer=data)
+
+@app.route('/testslider', methods=['GET'])
+def testslider():
+    return render_template("test.html")
 
 @app.route('/lecturer/<lector_id>', methods=['GET'])
 def showlec(lector_id):
