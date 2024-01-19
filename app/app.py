@@ -1,7 +1,7 @@
 import json
 from flask import Flask, make_response, render_template, request, jsonify
 from . import db
-from .db import add_kantor, filter_kantor, get_count, get, get_all, delete, update, get_page
+from .db import add_kantor, filter_kantor, get_count, get, get_all, delete, price_min_max, update, get_page
 
 app = Flask(__name__, static_folder="static")
 app.config['DATABASE'] = './app/data/lecture.db'
@@ -94,7 +94,8 @@ async def find_filtered():
 def main():
     data = get_all()
     count = get_count()
-    return render_template("index.html", data = data, count = count)
+    min_max = price_min_max()
+    return render_template("index.html", data = data, count = count, min_max = min_max)
 
 @app.route('/lecturer')
 def lecturer():

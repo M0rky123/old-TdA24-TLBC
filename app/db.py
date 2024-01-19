@@ -173,6 +173,14 @@ def get_count():
         data = cursor.fetchone()
         return data[0]
 
+def price_min_max():
+    with sqlite3.connect(current_app.config['DATABASE']) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT MIN(price), MAX(price) FROM kantori")
+        data = cursor.fetchone()
+        print(data)
+        return data
+
 def get_all_tags():
     with sqlite3.connect(current_app.config['DATABASE']) as connection:
         cursor = connection.cursor()
