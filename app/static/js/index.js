@@ -59,6 +59,9 @@ function filtersCreate() {
 filtersCreate();
 
 function filtersGet(tagsArray, locationsArray, pricesArray) {
+  let cards = document.getElementById("cards");
+  let lecturers = document.createDocumentFragment();
+
   fetch("/api/lecturers/filter", {
     method: "POST",
     headers: {
@@ -259,7 +262,7 @@ function lectCardsPaging() {
 
   lecturersBTNPrevious.addEventListener("click", () => {
     let activeTEXT = parseInt(document.getElementById("active-page").innerText);
-    if (currentPage < maxLecturersPage - 4 && activeTEXT > 3) {
+    if (activeTEXT < maxLecturersPage - 1 && activeTEXT > 3) {
       console.log(activeTEXT);
       pages.childNodes.forEach((e) => {
         e.innerText = parseInt(e.innerText) - 1;
